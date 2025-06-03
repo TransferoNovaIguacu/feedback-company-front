@@ -1,6 +1,7 @@
 "use client"
 
 import Head from 'next/head';
+import { Footer } from './components/footer';
 
 export default function EmConstrucao() {
 
@@ -45,6 +46,8 @@ export default function EmConstrucao() {
           &copy; 2023 Transfero Academy Nova Iguaçu. Todos os direitos reservados.
         </div>
       </div>
+
+      <Footer></Footer>
 
       <style jsx>{`
         .progress-bar .animate-progress {
