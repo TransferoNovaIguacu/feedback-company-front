@@ -16,7 +16,7 @@ export default function ComoFunciona() {
             <div className="flex-grow">
               <div className="mb-4 max-[500px]:text-center">
                 <div className="bg-[#263755] p-3 rounded-lg w-fit mb-2 max-[500px]:mx-auto">
-                  <img src="/svg/building.svg" alt="Empresa" className="w-6 h-6" />
+                  <img src="/svg/predio.svg" alt="Empresa" className="w-6 h-6" />
                 </div>
                 <h3 className="text-lg mt-6 font-extrabold">Para Empresas</h3>
               </div>
@@ -48,7 +48,7 @@ export default function ComoFunciona() {
             <div className="flex-grow">
               <div className="mb-4 max-[500px]:text-center">
                 <div className="bg-[#3a2c63] p-3 rounded-lg w-fit mb-2 max-[500px]:mx-auto">
-                  <img src="/svg/user-check.svg" alt="Avaliadores" className="w-6 h-6" />
+                  <img src="/svg/perfil-editar.svg" alt="Avaliadores" className="w-6 h-6" />
                 </div>
                 <h3 className="text-lg mt-6 font-extrabold">Para Avaliadores</h3>
               </div>
@@ -80,7 +80,7 @@ export default function ComoFunciona() {
             <div className="flex-grow">
               <div className="mb-4 max-[500px]:text-center">
                 <div className="bg-[#5f4d32] p-3 rounded-lg w-fit mb-2 max-[500px]:mx-auto">
-                  <img src="/svg/coin.svg" alt="Tokens" className="w-6 h-6" />
+                  <img src="/svg/moedas.svg" alt="Tokens" className="w-6 h-6" />
                 </div>
                 <h3 className="text-lg mt-6 font-extrabold">Tokens FTK</h3>
               </div>
