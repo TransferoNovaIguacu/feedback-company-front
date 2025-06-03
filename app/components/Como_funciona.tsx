@@ -1,4 +1,5 @@
 import React from 'react';
+import { Botao1 } from './Botao';
 
 export default function ComoFunciona() {
   return (
@@ -70,9 +71,10 @@ export default function ComoFunciona() {
                 </li>
               </ul>
             </div>
-            <button className="w-full bg-gradient-to-r from-[#3f80f6] to-[#895df6] hover:opacity-90 text-white font-semibold py-2 rounded-lg transition mt-2">
-              Começar agora
-            </button>
+            <div className='w-full flex justify-center items-center'>
+
+              <Botao1 texto='Começar agora'></Botao1>
+            </div>
           </div>
 
           {/* Card: Tokens FTK */}
