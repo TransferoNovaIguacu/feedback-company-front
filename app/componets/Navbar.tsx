@@ -1,18 +1,7 @@
 "use client";
 import { useState } from "react";
-
-type NavItem = {
-  name: string;
-  href: string;
-  current: boolean;
-};
-
-const navigation: NavItem[] = [
-  { name: "Dashboard", href: "#", current: true },
-  { name: "Team", href: "#", current: false },
-  { name: "Projects", href: "#", current: false },
-  { name: "Calendar", href: "#", current: false },
-];
+import logofeedtoken from "@/public/logo.png";
+import Image from "next/image";
 
 function classNames(...classes: (string | undefined | false | null)[]): string {
   return classes.filter(Boolean).join(" ");
@@ -20,21 +9,26 @@ function classNames(...classes: (string | undefined | false | null)[]): string {
 
 export function Navbar(): JSX.Element {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [profileOpen, setProfileOpen] = useState(false);
+
+  const navigation = [
+    { name: "Início", href: "#" },
+    { name: "Como Funciona", href: "#" },
+    { name: "Para Empresas", href: "#" },
+    { name: "Para Avaliadores", href: "#" },
+  ];
 
   return (
-    <nav className="bg-gray-800">
+    <nav className="bg-[#26282E] backdrop-blur-md absolute w-screen bg-opacity-80">
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
         <div className="relative flex h-16 items-center justify-between">
+          {/* Botão menu mobile (esquerda) */}
           <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
-            {/* Mobile menu button */}
             <button
               onClick={() => setMenuOpen(!menuOpen)}
-              className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:ring-2 focus:ring-white"
+              className="inline-flex items-center rounded-md p-2 text-gray-400 hover:text-white"
               aria-label="Toggle menu"
             >
               {menuOpen ? (
-                // X icon
                 <svg
                   className="h-6 w-6"
                   fill="none"
@@ -49,7 +43,6 @@ export function Navbar(): JSX.Element {
                   />
                 </svg>
               ) : (
-                // Bars icon
                 <svg
                   className="h-6 w-6"
                   fill="none"
@@ -67,13 +60,11 @@ export function Navbar(): JSX.Element {
             </button>
           </div>
 
+          {/* Logo e Links de Navegação (esquerda) */}
           <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
             <div className="flex shrink-0 items-center">
-              <img // logo
-                className="h-8 w-auto"
-                src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500"
-                alt="Your Company"
-              />
+              <Image src={logofeedtoken} alt="FeedToken logo" width={40} />
+              <p className="font-bold ml-1 text-white">FeedToken</p> {/* Adicionei text-white para a visibilidade do texto */}
             </div>
             <div className="hidden sm:ml-6 sm:block">
               <div className="flex space-x-4">
@@ -81,13 +72,7 @@ export function Navbar(): JSX.Element {
                   <a
                     key={item.name}
                     href={item.href}
-                    aria-current={item.current ? "page" : undefined}
-                    className={classNames(
-                      item.current
-                        ? "bg-gray-900 text-white"
-                        : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                      "rounded-md px-3 py-2 text-sm font-medium"
-                    )}
+                    className="text-gray-300 rounded-md px-3 py-2 text-sm font-medium"
                   >
                     {item.name}
                   </a>
@@ -96,78 +81,32 @@ export function Navbar(): JSX.Element {
             </div>
           </div>
 
-          <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-            <button
-              type="button"
-              className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-              aria-label="View notifications"
-            >
-              <svg
-                className="h-6 w-6"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={1.5}
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0"
-                />
-              </svg>
-            </button>
-
-            {/* Profile dropdown */}
-            <div className="relative ml-3">
+          {/* Botões de Entrar e Cadastrar (direita) */}
+          {/* Adicionado 'hidden' para esconder em telas pequenas e 'sm:flex' para exibir em telas maiores que sm */}
+          <div className="absolute inset-y-0 right-0 hidden items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0 sm:flex">
+            <div className="flex space-x-4">
+              {/* Botão Entrar com gradiente */}
               <button
-                onClick={() => setProfileOpen(!profileOpen)}
-                className="relative flex rounded-full bg-gray-800 text-sm focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                aria-label="Open user menu"
+                className="rounded-md px-4 py-2 text-sm font-medium text-white"
+                style={{
+                  background: 'linear-gradient(to right, #8A2BE2, #6A5ACD)',
+                  boxShadow: '0 4px 14px 0 rgba(0, 0, 0, 0.2)',
+                }}
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  className="size-6 text-zinc-400"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
-                  />
-                </svg>
+                Entrar
               </button>
-
-              {profileOpen && (
-                <div className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5">
-                  <a
-                    href="#"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                  >
-                    Your Profile
-                  </a>
-                  <a
-                    href="#"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                  >
-                    Settings
-                  </a>
-                  <a
-                    href="#"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                  >
-                    Sign out
-                  </a>
-                </div>
-              )}
+              {/* Botão Cadastrar com fundo escuro */}
+              <button
+                className="rounded-md px-4 py-2 text-sm font-medium text-white bg-[#26282E]"
+              >
+                Cadastrar
+              </button>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Mobile menu */}
+      {/* Menu mobile */}
       {menuOpen && (
         <div className="sm:hidden" id="mobile-menu">
           <div className="space-y-1 px-2 pt-2 pb-3">
@@ -175,17 +114,27 @@ export function Navbar(): JSX.Element {
               <a
                 key={item.name}
                 href={item.href}
-                aria-current={item.current ? "page" : undefined}
-                className={classNames(
-                  item.current
-                    ? "bg-gray-900 text-white"
-                    : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                  "block rounded-md px-3 py-2 text-base font-medium"
-                )}
+                className="block text-gray-300 hover:text-white rounded-md px-3 py-2 text-base font-medium"
               >
                 {item.name}
               </a>
             ))}
+            {/* Adiciona botões de login/cadastro no menu mobile */}
+            <div className="mt-4 flex flex-col space-y-2">
+              <button
+                className="block rounded-md px-3 py-2 text-base font-medium text-white"
+                style={{
+                  background: 'linear-gradient(to right, #8A2BE2, #6A5ACD)',
+                }}
+              >
+                Entrar
+              </button>
+              <button
+                className="block rounded-md px-3 py-2 text-base font-medium text-white bg-[#26282E]"
+              >
+                Cadastrar
+              </button>
+            </div>
           </div>
         </div>
       )}
