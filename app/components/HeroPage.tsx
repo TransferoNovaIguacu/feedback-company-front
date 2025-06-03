@@ -1,10 +1,10 @@
 
 export default function HeroPage() {
     return (
-        <section className="min-h-screen flex items-center justify-center px-6 py-12 bg-[#0e1125] text-white">
+        <section className="h-2/3 flex items-center justify-center px-6 py-12 bg-[#0e1125] text-white">
             <div className="max-w-7xl w-full flex flex-col md:flex-row md:justify-between gap-8">
                 {/* Sessão esquerda */}
-                <div className="md:w-3/5 flex flex-col justify-center">
+                <div className="w-full flex flex-col justify-center">
                     <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-4">
                         Avalie e <span className="bg-gradient-to-r from-[#3f80f6] to-[#895df6] bg-clip-text text-transparent">Ganhe Tokens</span> em Troca
                     </h1>
