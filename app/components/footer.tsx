@@ -31,16 +31,16 @@ export function Footer() {
 
             <div className="flex space-x-4">
               <a href="/" className="text-gray-400 hover:text-blue-600 transition-colors duration-200">
-                <img src="/svg/icon-facebook.svg" alt="Facebook" className="w-6 h-6 hover:scale-110 transition-transform duration-200" />
+                <img src="/svg/facebook-icon.svg" alt="Facebook" className="w-6 h-6 hover:scale-110 transition-transform duration-200" />
               </a>
               <a href="/" className="text-gray-400 hover:text-pink-600 transition-colors duration-200">
-                <img src="/svg/icon-instagram.svg" alt="Instagram" className="w-6 h-6 hover:scale-110 transition-transform duration-200" />
+                <img src="/svg/instagram-icon.svg" alt="Instagram" className="w-6 h-6 hover:scale-110 transition-transform duration-200" />
               </a>
               <a href="/" className="text-gray-400 hover:text-blue-500 transition-colors duration-200">
-                <img src="/svg/icon-twitter.svg" alt="Twitter" className="w-6 h-6 hover:scale-110 transition-transform duration-200" />
+                <img src="/svg/twitter-icon.svg" alt="Twitter" className="w-6 h-6 hover:scale-110 transition-transform duration-200" />
               </a>
               <a href="/" className="text-gray-400 hover:text-blue-300 transition-colors duration-200">
-                <img src="/svg/icon-linkedin.svg" alt="Linkedin" className="w-6 h-6 hover:scale-110 transition-transform duration-200" />
+                <img src="/svg/linkedin-icon.svg" alt="Linkedin" className="w-6 h-6 hover:scale-110 transition-transform duration-200" />
               </a>
             </div>
           </div>
