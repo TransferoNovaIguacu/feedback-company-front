@@ -1,4 +1,7 @@
+'use client';
+
 import Head from 'next/head';
+import ComoFunciona from './components/Como_funciona';
 
 export default function EmConstrucao() {
 
@@ -43,6 +46,8 @@ export default function EmConstrucao() {
           &copy; 2023 Transfero Academy Nova Iguaçu. Todos os direitos reservados.
         </div>
       </div>
+
+      <ComoFunciona></ComoFunciona>
 
       <style jsx>{`
         .progress-bar .animate-progress {
