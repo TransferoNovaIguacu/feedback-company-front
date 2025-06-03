@@ -18,7 +18,7 @@ export function Navbar(): JSX.Element {
   ];
 
   return (
-    <nav className="bg-[#26282E] backdrop-blur-md absolute w-screen bg-opacity-80">
+    <nav className="bg-[#26282E] backdrop-blur-md absolute w-full bg-opacity-80">
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
         <div className="relative flex h-16 items-center justify-between">
           {/* Botão menu mobile (esquerda) */}
