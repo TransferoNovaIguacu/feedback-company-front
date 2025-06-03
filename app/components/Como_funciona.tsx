@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function ComoFunciona() {
   return (
-    <section className="bg-[#111429] min-h-screen text-white py-20 px-4">
+    <section className="bg-[#111429] flex justify-center items-center min-h-screen text-white px-4">
       <div className="max-w-7xl mx-auto text-center">
         <h2 className="text-3xl md:text-3xl font-extrabold mb-4">Como Funciona</h2>
         <p className="text-gray-400 mb-12">
