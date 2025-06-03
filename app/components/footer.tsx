@@ -50,7 +50,7 @@ export function Footer() {
           <div>
             <h2 className="mb-4 pt-1 text-lg font-bold text-white tracking-wider">Plataforma</h2>
             <ul className="space-y-2">
-              <li><a href="/login" className="text-zinc-400 hover:text-zinc-200 hover:font-medium transition-colors duration-200">Como Funciona</a></li>
+              <li><a href="/" className="text-zinc-400 hover:text-zinc-200 hover:font-medium transition-colors duration-200">Como Funciona</a></li>
               <li><a href="/" className="text-zinc-400 hover:text-zinc-200 hover:font-medium transition-colors duration-200">Tokens FTK</a></li>
               <li><a href="/" className="text-zinc-400 hover:text-zinc-200 hover:font-medium transition-colors duration-200">Para Empresas</a></li>
               <li><a href="/" className="text-zinc-400 hover:text-zinc-200 hover:font-medium transition-colors duration-200">Para Avaliadores</a></li>
