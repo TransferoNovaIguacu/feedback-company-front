@@ -91,13 +91,13 @@ export default function AvailableEvaluations() {
   };
 
   return (
-    <div className="bg-[#0A0B10] w-full h-screen">
+    <div className="bg-[#0A0B10] w-full h-fit">
       {/* Você pode incluir a Navbar aqui se quiser que ela apareça nesta rota */}
       {/* Certifique-se de importar a Navbar se precisar dela aqui, por exemplo:
       import { Navbar } from '@/components/Navbar';
       <Navbar />
       */}
-      <main className="pt-16 w-full"> {/* Ajuste o padding se a Navbar estiver presente e for absoluta/fixa */}
+      <main className="py-16 w-full"> {/* Ajuste o padding se a Navbar estiver presente e for absoluta/fixa */}
         <section className="py-16 text-white flex flex-col justify-center items-center">
           <div className="max-w-7xl w-full">
             {/* Cabeçalho da seção */}

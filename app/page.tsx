@@ -1,5 +1,6 @@
 "use client";
 import Head from 'next/head';
+import AvailableEvaluations from './components/AvailableEvaluations';
 
 export default function EmConstrucao() {
 
