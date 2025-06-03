@@ -11,7 +11,7 @@ export function Footer() {
 
           <div className="sm:col-span-1">
   <div className="flex items-center space-x-3 mb-4">
-    <div className="w-10 h-10 bg-gradient-to-br from-[#895df6] to-[#3f80f6] clip-hexagon scale-y-[0.85] flex items-center justify-center">
+    <div className="w-10 h-10 bg-gradient-to-r from-[#3f80f6] to-[#895df6] clip-hexagon scale-y-[0.85] flex items-center justify-center">
       <img src="svg/logo.svg" alt="Logo FeedToken" className="w-full h-full" />
     </div>
     <span className="text-white font-bold text-lg">FeedToken</span>
