@@ -1,6 +1,5 @@
 "use client";
 import Head from 'next/head';
-import HeroPage from './components/HeroPage';
 
 export default function EmConstrucao() {
 
@@ -45,8 +44,6 @@ export default function EmConstrucao() {
           &copy; 2023 Transfero Academy Nova Iguaçu. Todos os direitos reservados.
         </div>
       </div>
-
-      <HeroPage></HeroPage>
 
       <style jsx>{`
         .progress-bar .animate-progress {
