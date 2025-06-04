@@ -1,10 +1,12 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { ThumbsUp, ThumbsDown, MoreHorizontal } from 'lucide-react';
 
-const feedbacksData = [
+// Adicionando IDs únicos para cada feedback
+const initialFeedbacksData = [
   {
+    id: 1,
     user: "John Doe",
     Nível: 4,
     initials: "JD",
@@ -13,6 +15,7 @@ const feedbacksData = [
     rating: "Muito útil"
   },
   {
+    id: 2,
     user: "Alice Smith",
     Nível: 3,
     initials: "AS",
@@ -21,14 +24,16 @@ const feedbacksData = [
     rating: "Útil"
   },
   {
+    id: 3,
     user: "Robert Johnson",
     Nível: 5,
     initials: "RJ",
     feedback: "As imagens dos produtos demoram para carregar no celular. Considere otimizá-las para carregar mais rápido.",
     date: new Date('2023-05-12'),
-    rating: "Não é Útil"
+    rating: "Não Útil"
   },
   {
+    id: 4,
     user: "Emily Brown",
     Nível: 2,
     initials: "EB",
@@ -37,14 +42,16 @@ const feedbacksData = [
     rating: "Muito útil"
   },
   {
+    id: 5,
     user: "Daniel Wilson",
     Nível: 1,
     initials: "DW",
     feedback: "Alguns links estão quebrados, especialmente na página de FAQ.",
     date: new Date('2024-11-05'),
-    rating: "Não é Útil"
+    rating: "Não Útil"
   },
   {
+    id: 6,
     user: "Sophia Davis",
     Nível: 3,
     initials: "SD",
@@ -53,14 +60,16 @@ const feedbacksData = [
     rating: "Útil"
   },
   {
+    id: 7,
     user: "Michael Scott",
     Nível: 4,
     initials: "MS",
     feedback: "Muitos pop-ups. Por favor, diminuam os banners de marketing.",
     date: new Date('2025-01-15'),
-    rating: "Não é Útil"
+    rating: "Não Útil"
   },
   {
+    id: 8,
     user: "Olivia Martinez",
     Nível: 2,
     initials: "OM",
@@ -69,14 +78,16 @@ const feedbacksData = [
     rating: "Muito útil"
   },
   {
+    id: 9,
     user: "Lucas Silva",
     Nível: 1,
     initials: "LS",
     feedback: "O site demora um pouco para carregar na minha internet.",
     date: new Date('2025-02-10'),
-    rating: "Não é Útil"
+    rating: "Não Útil"
   },
   {
+    id: 10,
     user: "Camila Rocha",
     Nível: 5,
     initials: "CR",
@@ -85,14 +96,16 @@ const feedbacksData = [
     rating: "Útil"
   },
   {
+    id: 11,
     user: "Bruno Ferreira",
     Nível: 2,
     initials: "BF",
     feedback: "Faltam mais opções de idioma além de português e inglês.",
     date: new Date('2025-03-04'),
-    rating: "Não é Útil"
+    rating: "Não Útil"
   },
   {
+    id: 12,
     user: "Ana Costa",
     Nível: 3,
     initials: "AC",
@@ -101,14 +114,16 @@ const feedbacksData = [
     rating: "Muito útil"
   },
   {
+    id: 13,
     user: "Pedro Gomes",
     Nível: 4,
     initials: "PG",
     feedback: "A navegação entre categorias é bem confusa.",
     date: new Date('2025-03-12'),
-    rating: "Não é Útil"
+    rating: "Não Útil"
   },
   {
+    id: 14,
     user: "Julia Almeida",
     Nível: 1,
     initials: "JA",
@@ -117,6 +132,7 @@ const feedbacksData = [
     rating: "Útil"
   },
   {
+    id: 15,
     user: "Marcos Tavares",
     Nível: 3,
     initials: "MT",
@@ -125,6 +141,7 @@ const feedbacksData = [
     rating: "Muito útil"
   },
   {
+    id: 16,
     user: "Larissa Mendes",
     Nível: 2,
     initials: "LM",
@@ -133,6 +150,7 @@ const feedbacksData = [
     rating: "Muito útil"
   },
   {
+    id: 17,
     user: "Gustavo Nogueira",
     Nível: 4,
     initials: "GN",
@@ -141,14 +159,16 @@ const feedbacksData = [
     rating: "Útil"
   },
   {
+    id: 18,
     user: "Fernanda Duarte",
     Nível: 5,
     initials: "FD",
     feedback: "As imagens de alguns produtos estão com baixa qualidade.",
     date: new Date('2025-03-25'),
-    rating: "Não é Útil"
+    rating: "Não Útil"
   },
   {
+    id: 19,
     user: "Henrique Souza",
     Nível: 2,
     initials: "HS",
@@ -157,6 +177,7 @@ const feedbacksData = [
     rating: "Útil"
   },
   {
+    id: 20,
     user: "Isabela Lopes",
     Nível: 3,
     initials: "IL",
@@ -165,13 +186,19 @@ const feedbacksData = [
     rating: "Muito útil"
   }
 ];
+const toggleLike = (id: number, type: "up" | "down") => {
+  setLiked((prev) => ({
+    ...prev,
+    [id]: prev[id] === type ? null : type
+  }));
+};
 
 
 const getRatingStyle = (rating: string) => {
   switch (rating) {
     case "Muito útil": return "bg-green-100 text-green-700";
     case "Útil": return "bg-blue-100 text-blue-700";
-    case "Não útil": return "bg-red-100 text-red-700";
+    case "Não Útil": return "bg-red-100 text-red-700";
     default: return "bg-gray-100 text-gray-700";
   }
 };
@@ -198,34 +225,52 @@ const formatCustomDate = (date: Date) => {
 };
 
 export default function FeedbackTable() {
-  const [feedbacks] = useState(feedbacksData);
+  const [feedbacks, setFeedbacks] = useState(initialFeedbacksData);
   const [currentPage, setCurrentPage] = useState(1);
   const [sortOrder, setSortOrder] = useState("latest");
   const [liked, setLiked] = useState<{ [key: number]: "up" | "down" | null }>({});
   const [searchTerm, setSearchTerm] = useState("");
   const [ratingFilter, setRatingFilter] = useState("All");
-  const [itemsPerPage, setItemsPerPage] = useState(10); // Inicialmente 10 para desktop
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [openDropdownId, setOpenDropdownId] = useState<number | null>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Atualizar itemsPerPage baseado no tamanho da tela
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 768) {
-        setItemsPerPage(3); // 3 itens para mobile
+        setItemsPerPage(3);
       } else {
-        setItemsPerPage(10); // 10 itens para desktop
+        setItemsPerPage(10);
       }
-      setCurrentPage(1); // Resetar para a primeira página ao redimensionar
+      setCurrentPage(1);
     };
 
-    // Definir valor inicial
     handleResize();
-
-    // Adicionar listener para redimensionamento
     window.addEventListener('resize', handleResize);
-    
-    // Remover listener ao desmontar
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  // Fechar dropdown ao clicar fora
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setOpenDropdownId(null);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const updateFeedbackRating = (id: number, newRating: string) => {
+    setFeedbacks(prevFeedbacks => 
+      prevFeedbacks.map(feedback => 
+        feedback.id === id ? { ...feedback, rating: newRating } : feedback
+      )
+    );
+    setOpenDropdownId(null);
+  };
 
   const filteredFeedbacks = feedbacks
     .filter(f =>
@@ -236,7 +281,7 @@ export default function FeedbackTable() {
 
   const sortedFeedbacks = [...filteredFeedbacks].sort((a, b) => {
     if (sortOrder === "latest") return b.date.getTime() - a.date.getTime();
-    if (sortOrder === "oldest") return a.date.getTime() - b.date.getTime(); // Nova opção
+    if (sortOrder === "oldest") return a.date.getTime() - b.date.getTime();
     return a.user.localeCompare(b.user);
   });
 
@@ -251,10 +296,10 @@ export default function FeedbackTable() {
   const endIndex = Math.min(currentPage * itemsPerPage, filteredFeedbacks.length);
   const totalResults = filteredFeedbacks.length;
 
-  const toggleLike = (index: number, type: "up" | "down") => {
+  const toggleLike = (id: number, type: "up" | "down") => {
     setLiked((prev) => ({
       ...prev,
-      [index]: prev[index] === type ? null : type
+      [id]: prev[id] === type ? null : type
     }));
   };
 
@@ -280,7 +325,7 @@ export default function FeedbackTable() {
               onChange={(e) => setSortOrder(e.target.value)}
             >
               <option value="latest">Mais recentes</option>
-              <option value="oldest">Mais antigos</option> {/* Nova opção adicionada */}
+              <option value="oldest">Mais antigos</option>
               <option value="az">A - Z</option>
             </select>
 
@@ -295,7 +340,7 @@ export default function FeedbackTable() {
               <option value="All">Todas classificações</option>
               <option value="Muito útil">Muito útil</option>
               <option value="Útil">Útil</option>
-              <option value="Não útil">Não útil</option>
+              <option value="Não Útil">Não Útil</option>
             </select>
           </div>
         </div>
@@ -314,8 +359,8 @@ export default function FeedbackTable() {
             </tr>
           </thead>
           <tbody>
-            {paginatedFeedbacks.map((item, idx) => (
-              <tr key={idx} className="border-b text-sm text-black">
+            {paginatedFeedbacks.map((item) => (
+              <tr key={item.id} className="border-b text-sm text-black">
                 <td className="p-2 flex items-center gap-2">
                   <div className="rounded-full w-8 h-8 bg-purple-200 text-purple-800 flex items-center justify-center font-bold text-sm">
                     {item.initials}
@@ -337,15 +382,47 @@ export default function FeedbackTable() {
                 <td className="p-3 flex items-center gap-2">
                   <ThumbsUp
                     size={18}
-                    className={`cursor-pointer ${liked[idx] === "up" ? "text-purple-600" : "text-gray-400"}`}
-                    onClick={() => toggleLike(idx, "up")}
+                    className={`cursor-pointer ${liked[item.id] === "up" ? "text-purple-600" : "text-gray-400"}`}
+                    onClick={() => toggleLike(item.id, "up")}
                   />
                   <ThumbsDown
                     size={18}
-                    className={`cursor-pointer ${liked[idx] === "down" ? "text-red-600" : "text-gray-400"}`}
-                    onClick={() => toggleLike(idx, "down")}
+                    className={`cursor-pointer ${liked[item.id] === "down" ? "text-red-600" : "text-gray-400"}`}
+                    onClick={() => toggleLike(item.id, "down")}
                   />
-                  <MoreHorizontal size={18} className="text-gray-400 cursor-pointer" />
+                  
+                  <div className="relative" ref={dropdownRef}>
+                    <MoreHorizontal 
+                      size={18} 
+                      className="text-gray-400 cursor-pointer" 
+                      onClick={() => setOpenDropdownId(openDropdownId === item.id ? null : item.id)}
+                    />
+                    
+                    {openDropdownId === item.id && (
+                      <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-10">
+                        <div className="py-1">
+                          <button 
+                            className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                            onClick={() => updateFeedbackRating(item.id, "Muito útil")}
+                          >
+                            Muito útil
+                          </button>
+                          <button 
+                            className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                            onClick={() => updateFeedbackRating(item.id, "Útil")}
+                          >
+                            Útil
+                          </button>
+                          <button 
+                            className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                            onClick={() => updateFeedbackRating(item.id, "Não Útil")}
+                          >
+                            Não Útil
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </td>
               </tr>
             ))}
@@ -355,8 +432,8 @@ export default function FeedbackTable() {
 
       {/* Cards para mobile */}
       <div className="md:hidden space-y-4">
-        {paginatedFeedbacks.map((item, idx) => (
-          <div key={idx} className="border rounded-lg p-4 bg-white">
+        {paginatedFeedbacks.map((item) => (
+          <div key={item.id} className="border rounded-lg p-4 bg-white">
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-3">
                 <div className="rounded-full w-10 h-10 bg-purple-200 text-purple-800 flex items-center justify-center font-bold text-sm">
@@ -383,15 +460,47 @@ export default function FeedbackTable() {
               <div className="flex gap-2">
                 <ThumbsUp
                   size={18}
-                  className={`cursor-pointer ${liked[idx] === "up" ? "text-purple-600" : "text-gray-400"}`}
-                  onClick={() => toggleLike(idx, "up")}
+                  className={`cursor-pointer ${liked[item.id] === "up" ? "text-purple-600" : "text-gray-400"}`}
+                  onClick={() => toggleLike(item.id, "up")}
                 />
                 <ThumbsDown
                   size={18}
-                  className={`cursor-pointer ${liked[idx] === "down" ? "text-red-600" : "text-gray-400"}`}
-                  onClick={() => toggleLike(idx, "down")}
+                  className={`cursor-pointer ${liked[item.id] === "down" ? "text-red-600" : "text-gray-400"}`}
+                  onClick={() => toggleLike(item.id, "down")}
                 />
-                <MoreHorizontal size={18} className="text-gray-400 cursor-pointer" />
+                
+                <div className="relative" ref={dropdownRef}>
+                  <MoreHorizontal 
+                    size={18} 
+                    className="text-gray-400 cursor-pointer" 
+                    onClick={() => setOpenDropdownId(openDropdownId === item.id ? null : item.id)}
+                  />
+                  
+                  {openDropdownId === item.id && (
+                    <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-10">
+                      <div className="py-1">
+                        <button 
+                          className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                          onClick={() => updateFeedbackRating(item.id, "Muito útil")}
+                        >
+                          Muito útil
+                        </button>
+                        <button 
+                          className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                          onClick={() => updateFeedbackRating(item.id, "Útil")}
+                        >
+                          Útil
+                        </button>
+                        <button 
+                          className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                          onClick={() => updateFeedbackRating(item.id, "Não Útil")}
+                        >
+                          Não Útil
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>
@@ -433,4 +542,8 @@ export default function FeedbackTable() {
       </div>
     </div>
   );
+}
+
+function setLiked(arg0: (prev: any) => any) {
+  throw new Error('Function not implemented.');
 }
