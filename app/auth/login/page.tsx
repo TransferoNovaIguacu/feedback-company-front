@@ -59,7 +59,7 @@ export default function Login() {
 
               <button
                 type="submit"
-                className="w-full bg-gradient-to-r from-blueGradientStart to-blueGradientEnd text-white py-2 rounded-md font-semibold hover:opacity-90 transition"
+                className="w-full bg-gradient-to-r from-primary to-blue-600 text-white py-2 rounded-md font-semibold hover:opacity-90 transition"
               >
                 Entrar
               </button>
