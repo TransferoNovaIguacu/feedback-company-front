@@ -46,8 +46,6 @@ export default function EmConstrucao() {
         </div>
       </div>
 
-      <Engajamento/>
-
       <style jsx>{`
         .progress-bar .animate-progress {
           animation: progress 3s infinite;
