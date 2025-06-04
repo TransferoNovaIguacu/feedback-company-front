@@ -30,16 +30,16 @@ export function Footer() {
             {/* Redes sociais */}
 
             <div className="flex space-x-4">
-              <a href="/" className="text-gray-400 hover:text-blue-600 transition-colors duration-200">
+              <a href="/en-construcao" className="text-gray-400 hover:text-blue-600 transition-colors duration-200">
                 <img src="/svg/facebook-icon.svg" alt="Facebook" className="w-6 h-6 hover:scale-110 transition-transform duration-200" />
               </a>
-              <a href="/" className="text-gray-400 hover:text-pink-600 transition-colors duration-200">
+              <a href="/en-construcao" className="text-gray-400 hover:text-pink-600 transition-colors duration-200">
                 <img src="/svg/instagram-icon.svg" alt="Instagram" className="w-6 h-6 hover:scale-110 transition-transform duration-200" />
               </a>
-              <a href="/" className="text-gray-400 hover:text-blue-500 transition-colors duration-200">
+              <a href="/en-construcao" className="text-gray-400 hover:text-blue-500 transition-colors duration-200">
                 <img src="/svg/twitter-icon.svg" alt="Twitter" className="w-6 h-6 hover:scale-110 transition-transform duration-200" />
               </a>
-              <a href="/" className="text-gray-400 hover:text-blue-300 transition-colors duration-200">
+              <a href="/en-construcao" className="text-gray-400 hover:text-blue-300 transition-colors duration-200">
                 <img src="/svg/linkedin-icon.svg" alt="Linkedin" className="w-6 h-6 hover:scale-110 transition-transform duration-200" />
               </a>
             </div>
@@ -50,10 +50,10 @@ export function Footer() {
           <div>
             <h2 className="mb-4 pt-1 text-lg font-bold text-white tracking-wider">Plataforma</h2>
             <ul className="space-y-2">
-              <li><a href="/" className="text-zinc-400 hover:text-zinc-200 hover:font-medium transition-colors duration-200">Como Funciona</a></li>
-              <li><a href="/" className="text-zinc-400 hover:text-zinc-200 hover:font-medium transition-colors duration-200">Tokens FTK</a></li>
-              <li><a href="/" className="text-zinc-400 hover:text-zinc-200 hover:font-medium transition-colors duration-200">Para Empresas</a></li>
-              <li><a href="/" className="text-zinc-400 hover:text-zinc-200 hover:font-medium transition-colors duration-200">Para Avaliadores</a></li>
+              <li><a href="/en-construcao" className="text-zinc-400 hover:text-zinc-200 hover:font-medium transition-colors duration-200">Como Funciona</a></li>
+              <li><a href="/en-construcao" className="text-zinc-400 hover:text-zinc-200 hover:font-medium transition-colors duration-200">Tokens FTK</a></li>
+              <li><a href="/en-construcao" className="text-zinc-400 hover:text-zinc-200 hover:font-medium transition-colors duration-200">Para Empresas</a></li>
+              <li><a href="/en-construcao" className="text-zinc-400 hover:text-zinc-200 hover:font-medium transition-colors duration-200">Para Avaliadores</a></li>
             </ul>
           </div>
 
@@ -62,10 +62,10 @@ export function Footer() {
           <div>
             <h2 className="mb-4 pt-1  text-lg font-bold text-white tracking-wider">Recursos</h2>
             <ul className="space-y-2">
-              <li><a href="/" className="text-zinc-400 hover:text-zinc-200 hover:font-medium transition-colors duration-200">Blog</a></li>
-              <li><a href="/" className="text-zinc-400 hover:text-zinc-200 hover:font-medium transition-colors duration-200">FAQ</a></li>
-              <li><a href="/" className="text-zinc-400 hover:text-zinc-200 hover:font-medium transition-colors duration-200">Suporte</a></li>
-              <li><a href="/" className="text-zinc-400 hover:text-zinc-200 hover:font-medium transition-colors duration-200">Documentação</a></li>
+              <li><a href="/en-construcao" className="text-zinc-400 hover:text-zinc-200 hover:font-medium transition-colors duration-200">Blog</a></li>
+              <li><a href="/en-construcao" className="text-zinc-400 hover:text-zinc-200 hover:font-medium transition-colors duration-200">FAQ</a></li>
+              <li><a href="/en-construcao" className="text-zinc-400 hover:text-zinc-200 hover:font-medium transition-colors duration-200">Suporte</a></li>
+              <li><a href="/en-construcao" className="text-zinc-400 hover:text-zinc-200 hover:font-medium transition-colors duration-200">Documentação</a></li>
             </ul>
           </div>
 
@@ -74,10 +74,10 @@ export function Footer() {
           <div>
             <h2 className="mb-4 pt-1 text-lg font-bold text-white tracking-wider">Legal</h2>
             <ul className="space-y-2">
-              <li><a href="/" className="text-zinc-400 hover:text-zinc-200 hover:font-medium transition-colors duration-200">Termos de Serviço</a></li>
-              <li><a href="/" className="text-zinc-400 hover:text-zinc-200 hover:font-medium transition-colors duration-200">Política de Privacidade</a></li>
-              <li><a href="/" className="text-zinc-400 hover:text-zinc-200 hover:font-medium transition-colors duration-200">Política de Cookies</a></li>
-              <li><a href="/" className="text-zinc-400 hover:text-zinc-200 hover:font-medium transition-colors duration-200">Compliance</a></li>
+              <li><a href="/en-construcao" className="text-zinc-400 hover:text-zinc-200 hover:font-medium transition-colors duration-200">Termos de Serviço</a></li>
+              <li><a href="/en-construcao" className="text-zinc-400 hover:text-zinc-200 hover:font-medium transition-colors duration-200">Política de Privacidade</a></li>
+              <li><a href="/en-construcao" className="text-zinc-400 hover:text-zinc-200 hover:font-medium transition-colors duration-200">Política de Cookies</a></li>
+              <li><a href="/en-construcao" className="text-zinc-400 hover:text-zinc-200 hover:font-medium transition-colors duration-200">Compliance</a></li>
             </ul>
           </div>
         </div>

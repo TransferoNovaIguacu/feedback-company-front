@@ -12,10 +12,10 @@ export function Navbar(): JSX.Element {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const navigation = [
-    { name: "Início", href: "#" },
-    { name: "Como Funciona", href: "#" },
-    { name: "Para Empresas", href: "#" },
-    { name: "Para Avaliadores", href: "#" },
+    { name: "Início", href: "/" },
+    { name: "Como Funciona", href: "/en-construcao" },
+    { name: "Para Empresas", href: "/en-construcao" },
+    { name: "Para Avaliadores", href: "/en-construcao" },
   ];
 
   return (
@@ -88,9 +88,13 @@ export function Navbar(): JSX.Element {
           <div className="absolute inset-y-0 right-0 hidden items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0 sm:flex">
             <div className="flex space-x-4">
               {/* Botão Entrar com gradiente */}
-              <Botao1 texto="Entrar" />
+              <a href="/en-construcao">
+                <Botao1 texto="Entrar" />
+              </a>
               {/* Botão Cadastrar com fundo escuro */}
-              <Botao2 texto="Cadastrar" />
+              <a href="/en-construcao">
+                <Botao2 texto="Cadastrar" />
+              </a>
             </div>
           </div>
         </div>
@@ -109,7 +113,7 @@ export function Navbar(): JSX.Element {
                 {item.name}
               </a>
             ))}
-            
+
             <div className="mt-4 flex flex-col space-y-2">
               <Botao1 texto="Entrar" />
               <Botao2 texto="Cadastrar" />
