@@ -1,7 +1,49 @@
 "use client";
 import Head from 'next/head';
+import FeedbackTable from '../components/Tabela_Com_filtro';
 
 export default function EmConstrucao() {
+
+  const sampleUsers = [
+  { name: "Lucas Lima", initials: "LL", level: 2 },
+  { name: "Fernanda Rocha", initials: "FR", level: 5 },
+  { name: "Carlos Eduardo", initials: "CE", level: 3 },
+  { name: "Bruna Martins", initials: "BM", level: 4 },
+  { name: "Igor Silva", initials: "IS", level: 1 },
+];
+
+const sampleMessages = [
+  "A interface está ótima, mas poderia carregar mais rápido.",
+  "Gostei bastante da nova função de busca.",
+  "Faltou opção para filtrar os resultados por data.",
+  "Não consegui encontrar o botão de logout facilmente.",
+  "As imagens estão demorando para carregar no celular.",
+];
+
+const sampleRatings = ["Very Useful", "Useful", "Not Useful"];
+
+const generateRandomFeedbacks = (count = 5) => {
+  return Array.from({ length: count }, (_, i) => {
+    const user = sampleUsers[i % sampleUsers.length];
+    const message = sampleMessages[i % sampleMessages.length];
+    const rating = sampleRatings[i % sampleRatings.length];
+    const daysAgo = Math.floor(Math.random() * 30); // Até 30 dias atrás
+    const date = new Date();
+    date.setDate(date.getDate() - daysAgo);
+
+    return {
+      user: user.name,
+      initials: user.initials,
+      level: user.level,
+      feedback: message,
+      rating,
+      date
+    };
+  });
+};
+
+const feedbacksData = generateRandomFeedbacks(10); // gera 10 feedbacks aleatórios
+
 
   return (
     <>
@@ -44,6 +86,8 @@ export default function EmConstrucao() {
           &copy; 2023 Transfero Academy Nova Iguaçu. Todos os direitos reservados.
         </div>
       </div>
+
+      <FeedbackTable></FeedbackTable>
 
       <style jsx>{`
         .progress-bar .animate-progress {
