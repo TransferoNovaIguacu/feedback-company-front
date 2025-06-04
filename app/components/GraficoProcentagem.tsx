@@ -1,6 +1,31 @@
 import React from "react";
+/**
+ * Componente `FeedbackQualityChart`
+ * 
+ * Este componente exibe uma visualização da qualidade dos feedbacks usando barras de progresso (progress bars).
+ * 
+ * ✅ Uso:
+ * - Forneça um array de objetos `feedbackItems` com `label`, `percentage`, `barColor` e opcionalmente `textColor`.
+ * - A soma das porcentagens deve totalizar **exatamente 100%** para que o gráfico seja renderizado corretamente.
+ * - Opcionalmente, pode-se passar uma função `onViewAllClick` para lidar com o clique no botão "Ver Todos".
+ * 
+ * 🛠️ Exemplo de uso:
+ * ```tsx
+ * const dados = [
+ *   { label: "Ótimo", percentage: 60, barColor: "bg-green-500" },
+ *   { label: "Bom", percentage: 25, barColor: "bg-yellow-400" },
+ *   { label: "Ruim", percentage: 15, barColor: "bg-red-500" },
+ * ];
+ * 
+ * <FeedbackQualityChart
+ *   feedbackItems={dados}
+ *   onViewAllClick={() => console.log("Ver todos os feedbacks")}
+ * />
+ * ```
+ * 
+ * ⚠️ Este componente deve ser renderizado dentro de um componente `use client` se for usado em um projeto Next.js com diretivas de client component.
+ */
 
-// Define as props para o componente ProgressBar
 interface ProgressBarProps {
   label: string;
   percentage: number;
@@ -43,10 +68,10 @@ interface FeedbackQualityChartProps {
   onViewAllClick?: () => void;
 }
 
-const FeedbackQualityChart: React.FC<FeedbackQualityChartProps> = ({
+export default function FeedbackQualityChart ({
   feedbackItems,
   onViewAllClick,
-}) => {
+}: FeedbackQualityChartProps) {
   // Validação lógica para garantir que o total das porcentagens seja 100%
   const totalPercentage = feedbackItems.reduce(
     (sum, item) => sum + item.percentage,
@@ -95,49 +120,3 @@ const FeedbackQualityChart: React.FC<FeedbackQualityChartProps> = ({
     </div>
   );
 };
-
-// Componente principal da Aplicação (Exemplo de Uso)
-export default function App() {
-  const handleViewAll = () => {
-    console.log("Ver Todos clicado!");
-  };
-
-  // Dados corrigidos com os rótulos exigidos e soma 100%
-  const feedbackData = [
-    {
-      label: "Muito útil",
-      percentage: 50,
-      barColor: "bg-green-500",
-      textColor: "text-green-700",
-    },
-    {
-      label: "Útil",
-      percentage: 35,
-      barColor: "bg-blue-500",
-      textColor: "text-blue-700",
-    },
-    {
-      label: "Nada útil",
-      percentage: 15,
-      barColor: "bg-red-500",
-      textColor: "text-red-700",
-    },
-  ];
-
-  // Exemplo de dados que não somam 100% para testar a validação (descomente para testar)
-  // const invalidFeedbackData = [
-  //   { label: "Muito Útil", percentage: 40, barColor: "bg-green-500" },
-  //   { label: "Útil", percentage: 30, barColor: "bg-blue-500" },
-  //   { label: "Neutro", percentage: 20, barColor: "bg-yellow-500" },
-  //   { label: "Não Útil", percentage: 5, barColor: "bg-red-500" }, // Soma 95%
-  // ];
-
-  return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-      <FeedbackQualityChart
-        feedbackItems={feedbackData}
-        onViewAllClick={handleViewAll}
-      />
-    </div>
-  );
-}
