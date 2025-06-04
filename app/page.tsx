@@ -1,4 +1,5 @@
 import AvailableEvaluations from "./components/AvailableEvaluations";
+import CTA from "./components/CTAInstitucional";
 import ComoFunciona from "./components/Como_funciona";
 import Engajamento from "./components/Engajamento";
 import HeroPage from "./components/HeroPage";
@@ -11,6 +12,7 @@ export default function EmConstrucao() {
      <ComoFunciona/>
      <Engajamento/>
      <AvailableEvaluations/>
+     <CTA/>
     </>
   );
 }
