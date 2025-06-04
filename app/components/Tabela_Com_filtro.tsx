@@ -1,176 +1,177 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ThumbsUp, ThumbsDown, MoreHorizontal } from 'lucide-react';
 
 const feedbacksData = [
   {
     user: "John Doe",
-    level: 4,
+    Nível: 4,
     initials: "JD",
-    feedback: "The navigation menu is not intuitive. I had trouble finding the product categories section. Consider reorganizing the top menu.",
+    feedback: "O menu de navegação não é intuitivo. Tive dificuldades para encontrar a seção de categorias de produtos. Considere reorganizar o menu superior.",
     date: new Date(),
-    rating: "Very Useful"
+    rating: "Muito útil"
   },
   {
     user: "Alice Smith",
-    level: 3,
+    Nível: 3,
     initials: "AS",
-    feedback: "The checkout process was smooth, but I would suggest adding more payment options like Apple Pay and Google Pay.",
+    feedback: "O processo de finalização da compra foi tranquilo, mas sugiro adicionar mais opções de pagamento, como Apple Pay e Google Pay.",
     date: new Date(Date.now() - 86400000),
-    rating: "Useful"
+    rating: "Útil"
   },
   {
     user: "Robert Johnson",
-    level: 5,
+    Nível: 5,
     initials: "RJ",
-    feedback: "The product images don't load quickly on mobile. Consider optimizing them for faster loading times.",
+    feedback: "As imagens dos produtos demoram para carregar no celular. Considere otimizá-las para carregar mais rápido.",
     date: new Date('2023-05-12'),
-    rating: "Not Useful"
+    rating: "Não é Útil"
   },
   {
     user: "Emily Brown",
-    level: 2,
+    Nível: 2,
     initials: "EB",
-    feedback: "I loved the layout! Very clean and professional.",
+    feedback: "Adorei o layout! Muito limpo e profissional.",
     date: new Date('2024-03-02'),
-    rating: "Very Useful"
+    rating: "Muito útil"
   },
   {
     user: "Daniel Wilson",
-    level: 1,
+    Nível: 1,
     initials: "DW",
-    feedback: "Some links are broken, especially on the FAQ page.",
+    feedback: "Alguns links estão quebrados, especialmente na página de FAQ.",
     date: new Date('2024-11-05'),
-    rating: "Not Useful"
+    rating: "Não é Útil"
   },
   {
     user: "Sophia Davis",
-    level: 3,
+    Nível: 3,
     initials: "SD",
-    feedback: "Great product variety, but the filtering options could be improved.",
+    feedback: "Ótima variedade de produtos, mas os filtros de busca poderiam ser melhores.",
     date: new Date('2024-12-20'),
-    rating: "Useful"
+    rating: "Útil"
   },
   {
     user: "Michael Scott",
-    level: 4,
+    Nível: 4,
     initials: "MS",
-    feedback: "Too many pop-ups. Please reduce the marketing banners.",
+    feedback: "Muitos pop-ups. Por favor, diminuam os banners de marketing.",
     date: new Date('2025-01-15'),
-    rating: "Not Useful"
+    rating: "Não é Útil"
   },
   {
     user: "Olivia Martinez",
-    level: 2,
+    Nível: 2,
     initials: "OM",
-    feedback: "Dark mode is awesome! Would love a way to personalize the theme more.",
+    feedback: "O modo escuro é incrível! Seria ótimo poder personalizar ainda mais o tema.",
     date: new Date('2025-02-03'),
-    rating: "Very Useful"
+    rating: "Muito útil"
   },
   {
     user: "Lucas Silva",
-    level: 1,
+    Nível: 1,
     initials: "LS",
-    feedback: "Site demora um pouco para carregar na minha internet.",
+    feedback: "O site demora um pouco para carregar na minha internet.",
     date: new Date('2025-02-10'),
-    rating: "Not Useful"
+    rating: "Não é Útil"
   },
   {
     user: "Camila Rocha",
-    level: 5,
+    Nível: 5,
     initials: "CR",
     feedback: "Gostei do suporte ao cliente, foram bem rápidos.",
     date: new Date('2025-03-01'),
-    rating: "Useful"
+    rating: "Útil"
   },
   {
     user: "Bruno Ferreira",
-    level: 2,
+    Nível: 2,
     initials: "BF",
     feedback: "Faltam mais opções de idioma além de português e inglês.",
     date: new Date('2025-03-04'),
-    rating: "Not Useful"
+    rating: "Não é Útil"
   },
   {
     user: "Ana Costa",
-    level: 3,
+    Nível: 3,
     initials: "AC",
-    feedback: "Muito bom no mobile, gostei da responsividade.",
+    feedback: "Muito bom no celular, gostei da responsividade.",
     date: new Date('2025-03-10'),
-    rating: "Very Useful"
+    rating: "Muito útil"
   },
   {
     user: "Pedro Gomes",
-    level: 4,
+    Nível: 4,
     initials: "PG",
     feedback: "A navegação entre categorias é bem confusa.",
     date: new Date('2025-03-12'),
-    rating: "Not Useful"
+    rating: "Não é Útil"
   },
   {
     user: "Julia Almeida",
-    level: 1,
+    Nível: 1,
     initials: "JA",
     feedback: "Design muito bonito, mas faltam descrições detalhadas dos produtos.",
     date: new Date('2025-03-15'),
-    rating: "Useful"
+    rating: "Útil"
   },
   {
     user: "Marcos Tavares",
-    level: 3,
+    Nível: 3,
     initials: "MT",
     feedback: "Adorei o recurso de salvar produtos favoritos.",
     date: new Date('2025-03-17'),
-    rating: "Very Useful"
+    rating: "Muito útil"
   },
   {
     user: "Larissa Mendes",
-    level: 2,
+    Nível: 2,
     initials: "LM",
     feedback: "Ainda bem que tem modo escuro! Obrigada!",
     date: new Date('2025-03-20'),
-    rating: "Very Useful"
+    rating: "Muito útil"
   },
   {
     user: "Gustavo Nogueira",
-    level: 4,
+    Nível: 4,
     initials: "GN",
-    feedback: "Checkout rápido, mas não gostei do campo de cupom escondido.",
+    feedback: "Checkout rápido, mas não gostei do campo de cupom estar escondido.",
     date: new Date('2025-03-22'),
-    rating: "Useful"
+    rating: "Útil"
   },
   {
     user: "Fernanda Duarte",
-    level: 5,
+    Nível: 5,
     initials: "FD",
     feedback: "As imagens de alguns produtos estão com baixa qualidade.",
     date: new Date('2025-03-25'),
-    rating: "Not Useful"
+    rating: "Não é Útil"
   },
   {
     user: "Henrique Souza",
-    level: 2,
+    Nível: 2,
     initials: "HS",
     feedback: "Achei meio confusa a parte de rastreamento de pedidos.",
     date: new Date('2025-03-28'),
-    rating: "Useful"
+    rating: "Útil"
   },
   {
     user: "Isabela Lopes",
-    level: 3,
+    Nível: 3,
     initials: "IL",
     feedback: "Amei o blog! Traz várias dicas boas.",
     date: new Date('2025-03-30'),
-    rating: "Very Useful"
+    rating: "Muito útil"
   }
 ];
 
+
 const getRatingStyle = (rating: string) => {
   switch (rating) {
-    case "Very Useful": return "bg-green-100 text-green-700";
-    case "Useful": return "bg-blue-100 text-blue-700";
-    case "Not Useful": return "bg-red-100 text-red-700";
+    case "Muito útil": return "bg-green-100 text-green-700";
+    case "Útil": return "bg-blue-100 text-blue-700";
+    case "Não útil": return "bg-red-100 text-red-700";
     default: return "bg-gray-100 text-gray-700";
   }
 };
@@ -203,9 +204,28 @@ export default function FeedbackTable() {
   const [liked, setLiked] = useState<{ [key: number]: "up" | "down" | null }>({});
   const [searchTerm, setSearchTerm] = useState("");
   const [ratingFilter, setRatingFilter] = useState("All");
+  const [itemsPerPage, setItemsPerPage] = useState(10); // Inicialmente 10 para desktop
 
-  // Alterado para 3 itens por página
-  const itemsPerPage = 3;
+  // Atualizar itemsPerPage baseado no tamanho da tela
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setItemsPerPage(3); // 3 itens para mobile
+      } else {
+        setItemsPerPage(10); // 10 itens para desktop
+      }
+      setCurrentPage(1); // Resetar para a primeira página ao redimensionar
+    };
+
+    // Definir valor inicial
+    handleResize();
+
+    // Adicionar listener para redimensionamento
+    window.addEventListener('resize', handleResize);
+    
+    // Remover listener ao desmontar
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const filteredFeedbacks = feedbacks
     .filter(f =>
@@ -216,6 +236,7 @@ export default function FeedbackTable() {
 
   const sortedFeedbacks = [...filteredFeedbacks].sort((a, b) => {
     if (sortOrder === "latest") return b.date.getTime() - a.date.getTime();
+    if (sortOrder === "oldest") return a.date.getTime() - b.date.getTime(); // Nova opção
     return a.user.localeCompare(b.user);
   });
 
@@ -240,11 +261,11 @@ export default function FeedbackTable() {
   return (
     <div className="rounded-xl shadow-sm bg-white p-4 sm:p-6 text-black border border-gray-200 mx-2 sm:mx-0">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-3">
-        <h2 className="text-xl font-semibold">Recent Feedbacks</h2>
+        <h2 className="text-xl font-semibold">Avaliações Recentes</h2>
         <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
           <input
             type="text"
-            placeholder="Search feedbacks..."
+            placeholder="Procurar avaliações..."
             className="border border-gray-300 px-3 py-1.5 rounded text-sm w-full"
             value={searchTerm}
             onChange={(e) => {
@@ -258,7 +279,8 @@ export default function FeedbackTable() {
               value={sortOrder}
               onChange={(e) => setSortOrder(e.target.value)}
             >
-              <option value="latest">Latest First</option>
+              <option value="latest">Mais recentes</option>
+              <option value="oldest">Mais antigos</option> {/* Nova opção adicionada */}
               <option value="az">A - Z</option>
             </select>
 
@@ -270,10 +292,10 @@ export default function FeedbackTable() {
                 setCurrentPage(1);
               }}
             >
-              <option value="All">All Ratings</option>
-              <option value="Very Useful">Very Useful</option>
-              <option value="Useful">Useful</option>
-              <option value="Not Useful">Not Useful</option>
+              <option value="All">Todas classificações</option>
+              <option value="Muito útil">Muito útil</option>
+              <option value="Útil">Útil</option>
+              <option value="Não útil">Não útil</option>
             </select>
           </div>
         </div>
@@ -284,11 +306,11 @@ export default function FeedbackTable() {
         <table className="w-full">
           <thead>
             <tr className="text-left text-sm text-gray-500 border-b border-gray-200 bg-gray-50">
-              <th className="p-2">User</th>
-              <th className="p-2">Feedback</th>
-              <th className="p-2">Date</th>
-              <th className="p-2">Rating</th>
-              <th className="p-2">Actions</th>
+              <th className="p-2">Usuário</th>
+              <th className="p-2">Avaliação</th>
+              <th className="p-2">Datas</th>
+              <th className="p-2">Classificações</th>
+              <th className="p-2">Ações</th>
             </tr>
           </thead>
           <tbody>
@@ -300,10 +322,10 @@ export default function FeedbackTable() {
                   </div>
                   <div>
                     <div className="font-semibold text-black">{item.user}</div>
-                    <div className="text-xs text-gray-600">Level {item.level} Reviewer</div>
+                    <div className="text-xs text-gray-600">Nível {item.Nível} Avaliador</div>
                   </div>
                 </td>
-                <td className="p-2">{truncateText(item.feedback, 20)}</td>
+                <td className="p-2">{truncateText(item.feedback, 100)}</td>
                 <td className="p-2 text-sm text-black opacity-60">
                   {formatCustomDate(item.date)}
                 </td>
@@ -342,7 +364,7 @@ export default function FeedbackTable() {
                 </div>
                 <div>
                   <div className="font-semibold">{item.user}</div>
-                  <div className="text-xs text-gray-600">Level {item.level} Reviewer</div>
+                  <div className="text-xs text-gray-600">Nível {item.Nível} Avaliador</div>
                 </div>
               </div>
               <div className="text-xs text-gray-500">
@@ -378,16 +400,16 @@ export default function FeedbackTable() {
 
       <div className="flex flex-col sm:flex-row justify-between items-center mt-6 gap-4">
         <div className="text-sm text-gray-600">
-          Showing {startIndex} - {endIndex} of {totalResults} results
+          Mostrando {startIndex} - {endIndex} de {totalResults} resultados
         </div>
         
         <div className="flex items-center gap-2 flex-wrap justify-center">
           <button
-            className="px-3 py-1 border rounded text-gray-600 hover:text-black flex items-center hover:bg-gray-100 gap-1 cursor-pointer text-sm"
+            className="px-3 py-1 border rounded text-gray-600 hover:text-black flex items-center hover:bg-gray-100 gap-1 cursor-pointer text-sm disabled:opacity-50"
             onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
             disabled={currentPage === 1}
           >
-            <span>Previous</span>
+            <span>Anterior</span>
           </button>
           
           {Array.from({ length: totalPages }, (_, i) => (
@@ -401,11 +423,11 @@ export default function FeedbackTable() {
           ))}
           
           <button
-            className="px-3 py-1 border rounded text-gray-600 hover:text-black flex items-center hover:bg-gray-100 gap-1 cursor-pointer text-sm"
+            className="px-3 py-1 border rounded text-gray-600 hover:text-black flex items-center hover:bg-gray-100 gap-1 cursor-pointer text-sm disabled:opacity-50"
             onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
             disabled={currentPage === totalPages}
           >
-            <span>Next</span>
+            <span>Próximo</span>
           </button>
         </div>
       </div>
