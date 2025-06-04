@@ -1,11 +1,41 @@
 "use client";
 import Head from 'next/head';
-import AvailableEvaluations from './components/AvailableEvaluations';
+import Sidebar, { MenuItem } from './components/sidebar';
+
+
 
 export default function EmConstrucao() {
 
+  const menuItems: MenuItem[] = [
+  {
+    key: "dashboard", label: "Dashboard",
+    href: ''
+  },
+  {
+    key: "business", label: "Business",
+    href: ''
+  },
+  {
+    key: "user", label: "User",
+    href: ''
+  },
+  {
+    key: "admin", label: "Admin",
+    href: ''
+  },
+];
+
+
+const companyInfo = {
+  name: "Transfero academy",
+  type: "Bank account",
+  initials: "TA",
+};
+
+
   return (
     <>
+    <Sidebar menuItems={menuItems} companyInfo={companyInfo}>
       <Head>
         <title>Em Construção</title>
       </Head>
@@ -45,6 +75,11 @@ export default function EmConstrucao() {
           &copy; 2023 Transfero Academy Nova Iguaçu. Todos os direitos reservados.
         </div>
       </div>
+      </Sidebar>
+      
+
+
+
 
       <style jsx>{`
         .progress-bar .animate-progress {
