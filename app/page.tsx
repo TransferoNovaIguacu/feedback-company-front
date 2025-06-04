@@ -1,6 +1,8 @@
 "use client";
 import Head from 'next/head';
 import AvailableEvaluations from './components/AvailableEvaluations';
+import CardGenerico from './components/card';
+import { Botao1 } from './components/Botao';
 
 export default function EmConstrucao() {
 
@@ -45,6 +47,15 @@ export default function EmConstrucao() {
           &copy; 2023 Transfero Academy Nova Iguaçu. Todos os direitos reservados.
         </div>
       </div>
+
+      <CardGenerico
+        imagem="/svg/logo.svg"
+        titulo="Meu Card Exemplo"
+        descricao="Este é um exemplo de card usando o componente CardGenerico com Next.js."
+        lista={['Item 1', 'Item 2', 'Item 3']}
+        corIcone="#4f46e5"
+        botao={<Botao1 texto="Clique aqui" />}
+      />
 
       <style jsx>{`
         .progress-bar .animate-progress {
