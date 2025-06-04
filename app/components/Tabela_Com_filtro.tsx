@@ -204,7 +204,8 @@ export default function FeedbackTable() {
   const [searchTerm, setSearchTerm] = useState("");
   const [ratingFilter, setRatingFilter] = useState("All");
 
-  const itemsPerPage = 10;
+  // Alterado para 3 itens por página
+  const itemsPerPage = 3;
 
   const filteredFeedbacks = feedbacks
     .filter(f =>
@@ -225,7 +226,6 @@ export default function FeedbackTable() {
 
   const totalPages = Math.ceil(filteredFeedbacks.length / itemsPerPage);
   
-  // Cálculo dos índices para mostrar resultados
   const startIndex = (currentPage - 1) * itemsPerPage + 1;
   const endIndex = Math.min(currentPage * itemsPerPage, filteredFeedbacks.length);
   const totalResults = filteredFeedbacks.length;
@@ -238,77 +238,127 @@ export default function FeedbackTable() {
   };
 
   return (
-    <div className="rounded-xl shadow-sm bg-white p-6 text-black border border-gray-200">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-2">
+    <div className="rounded-xl shadow-sm bg-white p-4 sm:p-6 text-black border border-gray-200 mx-2 sm:mx-0">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-3">
         <h2 className="text-xl font-semibold">Recent Feedbacks</h2>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
           <input
             type="text"
             placeholder="Search feedbacks..."
-            className="border border-gray-300 px-3 py-1.5 rounded text-sm"
+            className="border border-gray-300 px-3 py-1.5 rounded text-sm w-full"
             value={searchTerm}
             onChange={(e) => {
               setSearchTerm(e.target.value);
               setCurrentPage(1);
             }}
           />
-          <select
-            className="border border-gray-300 px-3 py-1.5 rounded text-sm"
-            value={sortOrder}
-            onChange={(e) => setSortOrder(e.target.value)}
-          >
-            <option value="latest">Latest First</option>
-            <option value="az">A - Z</option>
-          </select>
+          <div className="flex gap-2">
+            <select
+              className="border border-gray-300 px-3 py-1.5 rounded text-sm flex-1 min-w-[120px]"
+              value={sortOrder}
+              onChange={(e) => setSortOrder(e.target.value)}
+            >
+              <option value="latest">Latest First</option>
+              <option value="az">A - Z</option>
+            </select>
 
-          <select
-            className="border border-gray-300 px-3 py-1.5 rounded text-sm"
-            value={ratingFilter}
-            onChange={(e) => {
-              setRatingFilter(e.target.value);
-              setCurrentPage(1);
-            }}
-          >
-            <option value="All">All Ratings</option>
-            <option value="Very Useful">Very Useful</option>
-            <option value="Useful">Useful</option>
-            <option value="Not Useful">Not Useful</option>
-          </select>
+            <select
+              className="border border-gray-300 px-3 py-1.5 rounded text-sm flex-1 min-w-[120px]"
+              value={ratingFilter}
+              onChange={(e) => {
+                setRatingFilter(e.target.value);
+                setCurrentPage(1);
+              }}
+            >
+              <option value="All">All Ratings</option>
+              <option value="Very Useful">Very Useful</option>
+              <option value="Useful">Useful</option>
+              <option value="Not Useful">Not Useful</option>
+            </select>
+          </div>
         </div>
       </div>
 
-      <table className="w-full">
-        <thead>
-          <tr className="text-left text-sm text-gray-500 border-b border-gray-200 bg-gray-50">
-            <th className="p-2">User</th>
-            <th className="p-2">Feedback</th>
-            <th className="p-2">Date</th>
-            <th className="p-2">Rating</th>
-            <th className="p-2">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {paginatedFeedbacks.map((item, idx) => (
-            <tr key={idx} className="border-b text-sm text-black">
-              <td className="p-2 flex items-center gap-2">
-                <div className="rounded-full w-8 h-8 bg-purple-200 text-purple-800 flex items-center justify-center font-bold text-sm">
+      {/* Tabela para desktop */}
+      <div className="hidden md:block">
+        <table className="w-full">
+          <thead>
+            <tr className="text-left text-sm text-gray-500 border-b border-gray-200 bg-gray-50">
+              <th className="p-2">User</th>
+              <th className="p-2">Feedback</th>
+              <th className="p-2">Date</th>
+              <th className="p-2">Rating</th>
+              <th className="p-2">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {paginatedFeedbacks.map((item, idx) => (
+              <tr key={idx} className="border-b text-sm text-black">
+                <td className="p-2 flex items-center gap-2">
+                  <div className="rounded-full w-8 h-8 bg-purple-200 text-purple-800 flex items-center justify-center font-bold text-sm">
+                    {item.initials}
+                  </div>
+                  <div>
+                    <div className="font-semibold text-black">{item.user}</div>
+                    <div className="text-xs text-gray-600">Level {item.level} Reviewer</div>
+                  </div>
+                </td>
+                <td className="p-2">{truncateText(item.feedback, 20)}</td>
+                <td className="p-2 text-sm text-black opacity-60">
+                  {formatCustomDate(item.date)}
+                </td>
+                <td className="p-2">
+                  <span className={`text-xs px-2 py-1 rounded ${getRatingStyle(item.rating)}`}>
+                    {item.rating}
+                  </span>
+                </td>
+                <td className="p-3 flex items-center gap-2">
+                  <ThumbsUp
+                    size={18}
+                    className={`cursor-pointer ${liked[idx] === "up" ? "text-purple-600" : "text-gray-400"}`}
+                    onClick={() => toggleLike(idx, "up")}
+                  />
+                  <ThumbsDown
+                    size={18}
+                    className={`cursor-pointer ${liked[idx] === "down" ? "text-red-600" : "text-gray-400"}`}
+                    onClick={() => toggleLike(idx, "down")}
+                  />
+                  <MoreHorizontal size={18} className="text-gray-400 cursor-pointer" />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Cards para mobile */}
+      <div className="md:hidden space-y-4">
+        {paginatedFeedbacks.map((item, idx) => (
+          <div key={idx} className="border rounded-lg p-4 bg-white">
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-3">
+                <div className="rounded-full w-10 h-10 bg-purple-200 text-purple-800 flex items-center justify-center font-bold text-sm">
                   {item.initials}
                 </div>
                 <div>
-                  <div className="font-semibold text-black">{item.user}</div>
+                  <div className="font-semibold">{item.user}</div>
                   <div className="text-xs text-gray-600">Level {item.level} Reviewer</div>
                 </div>
-              </td>
-              <td className="p-2">{truncateText(item.feedback, 100)}</td>
-              <td className="p-2 text-sm text-black opacity-60">
+              </div>
+              <div className="text-xs text-gray-500">
                 {formatCustomDate(item.date)}
-              </td>
-              <td className="p-2">
-                <span className={`text-xs px-2 py-1 rounded ${getRatingStyle(item.rating)}`}>
-                  {item.rating}
-                </span>
-              </td>
-              <td className="p-3 flex items-center gap-2">
+              </div>
+            </div>
+            
+            <div className="mb-3">
+              <p className="text-sm">{item.feedback}</p>
+            </div>
+            
+            <div className="flex justify-between items-center">
+              <span className={`text-xs px-2 py-1 rounded ${getRatingStyle(item.rating)}`}>
+                {item.rating}
+              </span>
+              <div className="flex gap-2">
                 <ThumbsUp
                   size={18}
                   className={`cursor-pointer ${liked[idx] === "up" ? "text-purple-600" : "text-gray-400"}`}
@@ -320,20 +370,20 @@ export default function FeedbackTable() {
                   onClick={() => toggleLike(idx, "down")}
                 />
                 <MoreHorizontal size={18} className="text-gray-400 cursor-pointer" />
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
 
-      <div className="flex justify-between items-center mt-4">
+      <div className="flex flex-col sm:flex-row justify-between items-center mt-6 gap-4">
         <div className="text-sm text-gray-600">
-          Mostrando {startIndex} - {endIndex} de {totalResults} resultados
+          Showing {startIndex} - {endIndex} of {totalResults} results
         </div>
         
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap justify-center">
           <button
-            className="px-3 py-1 border rounded text-gray-600 hover:text-black flex items-center hover:bg-gray-100 gap-1 cursor-pointer"
+            className="px-3 py-1 border rounded text-gray-600 hover:text-black flex items-center hover:bg-gray-100 gap-1 cursor-pointer text-sm"
             onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
             disabled={currentPage === 1}
           >
@@ -343,7 +393,7 @@ export default function FeedbackTable() {
           {Array.from({ length: totalPages }, (_, i) => (
             <button
               key={i}
-              className={`px-3 py-1 rounded ${currentPage === i + 1 ? 'bg-gray-100 text-purple-700' : 'border text-black'}`}
+              className={`px-3 py-1 rounded text-sm min-w-[36px] ${currentPage === i + 1 ? 'bg-gray-100 text-purple-700' : 'border text-black'}`}
               onClick={() => setCurrentPage(i + 1)}
             >
               {i + 1}
@@ -351,7 +401,7 @@ export default function FeedbackTable() {
           ))}
           
           <button
-            className="px-3 py-1 border rounded text-gray-600 hover:text-black flex items-center hover:bg-gray-100 gap-1 cursor-pointer"
+            className="px-3 py-1 border rounded text-gray-600 hover:text-black flex items-center hover:bg-gray-100 gap-1 cursor-pointer text-sm"
             onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
             disabled={currentPage === totalPages}
           >
