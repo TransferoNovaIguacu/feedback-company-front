@@ -1,5 +1,6 @@
 "use client";
 import Head from 'next/head';
+import ComentarioBox from '../components/comentario';
 
 export default function EmConstrucao() {
 
@@ -44,6 +45,7 @@ export default function EmConstrucao() {
           &copy; 2023 Transfero Academy Nova Iguaçu. Todos os direitos reservados.
         </div>
       </div>
+      <ComentarioBox></ComentarioBox>
 
       <style jsx>{`
         .progress-bar .animate-progress {
