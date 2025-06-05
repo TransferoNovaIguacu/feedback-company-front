@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import logofeedtoken from "@/public/logo.png";
+import logofeedtoken from "@/public/png/logo.png";
 import Image from "next/image";
 import { Botao1, Botao2 } from "./Botao";
 

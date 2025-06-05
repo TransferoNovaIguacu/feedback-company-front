@@ -1,9 +1,8 @@
 "use client";
+
 import Head from 'next/head';
-import FeedbackTable from '../components/Tabela_Com_filtro';
 
 export default function EmConstrucao() {
-
 
 
   return (
