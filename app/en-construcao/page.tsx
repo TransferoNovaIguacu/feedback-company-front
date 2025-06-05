@@ -47,7 +47,6 @@ export default function EmConstrucao() {
           &copy; 2023 Transfero Academy Nova Iguaçu. Todos os direitos reservados.
         </div>
       </div>
-      <TipoPesquisaSelector></TipoPesquisaSelector>
 
       <style jsx>{`
         .progress-bar .animate-progress {
