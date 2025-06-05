@@ -1,6 +1,7 @@
 "use client";
 
 import Head from 'next/head';
+import TokenBalance from '../components/status-carteira';
 
 export default function EmConstrucao() {
 
@@ -45,6 +46,10 @@ export default function EmConstrucao() {
         <div className="mt-8 text-white text-opacity-70 text-sm">
           &copy; 2023 Transfero Academy Nova Iguaçu. Todos os direitos reservados.
         </div>
+      </div>
+
+      <div className="h-screen">
+      <TokenBalance tokens={1000}/>
       </div>
 
       <style jsx>{`
