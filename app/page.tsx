@@ -1,29 +1,10 @@
 "use client";
 import Head from 'next/head';
-import Sidebar, { MenuItem } from './components/sidebar';
+import Sidebar from './components/sidebar';
 
 
 
 export default function EmConstrucao() {
-
-  const menuItems: MenuItem[] = [
-  {
-    key: "dashboard", label: "Dashboard",
-    href: ''
-  },
-  {
-    key: "business", label: "Business",
-    href: ''
-  },
-  {
-    key: "user", label: "User",
-    href: ''
-  },
-  {
-    key: "admin", label: "Admin",
-    href: ''
-  },
-];
 
 
 const companyInfo = {
@@ -35,7 +16,7 @@ const companyInfo = {
 
   return (
     <>
-    <Sidebar menuItems={menuItems} companyInfo={companyInfo}>
+    <Sidebar companyInfo={companyInfo} />
       <Head>
         <title>Em Construção</title>
       </Head>
@@ -75,7 +56,6 @@ const companyInfo = {
           &copy; 2023 Transfero Academy Nova Iguaçu. Todos os direitos reservados.
         </div>
       </div>
-      </Sidebar>
       
 
 

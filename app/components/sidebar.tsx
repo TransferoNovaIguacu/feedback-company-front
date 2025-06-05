@@ -1,16 +1,8 @@
-"use client";
-
-import React, { ReactNode, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { Home, Building, User, Shield, Menu, X } from "lucide-react";
 import CompanyProfile from "./company-sidebar";
 import Image from "next/image";
-
-export type MenuItem = {
-  key: "dashboard" | "business" | "user" | "admin";
-  label: string;
-  href: string;
-};
 
 type CompanyInfo = {
   name: string;
@@ -19,88 +11,93 @@ type CompanyInfo = {
 };
 
 type SidebarProps = {
-  menuItems: MenuItem[];
   companyInfo: CompanyInfo;
-  children: ReactNode;
 };
 
-const iconMap: Record<MenuItem["key"], JSX.Element> = {
-  dashboard: <Home size={18} />,
-  business: <Building size={18} />,
-  user: <User size={18} />,
-  admin: <Shield size={18} />,
-};
+const SIDEBAR_WIDTH = 224; // 14rem * 16px = 224px
 
-const Sidebar: React.FC<SidebarProps> = ({ menuItems, companyInfo, children }) => {
+const menuItems = [
+  { key: "dashboard", label: "Dashboard", href: "/dashboard", icon: <Home size={18} /> },
+  { key: "business", label: "Negócios", href: "/business", icon: <Building size={18} /> },
+  { key: "user", label: "Usuários", href: "/users", icon: <User size={18} /> },
+  { key: "admin", label: "Admin", href: "/admin", icon: <Shield size={18} /> },
+] as const;
+
+type MenuItem = (typeof menuItems)[number];
+
+const Sidebar: React.FC<SidebarProps> = ({ companyInfo }) => {
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const selectedKey =
     menuItems.find((item) => pathname.startsWith(item.href))?.key ?? "dashboard";
 
-  // Evita scroll no body quando o menu mobile está aberto
+  // Função para verificar se estamos em tela desktop >= md (768px)
+  const isDesktop = () => window.matchMedia("(min-width: 768px)").matches;
+
   useEffect(() => {
-    if (sidebarOpen) {
-      document.body.style.overflow = "hidden";
+    // Ajusta overflow body quando mobile sidebar aberta
+    document.body.style.overflow = sidebarOpen ? "hidden" : "";
+
+    // Se desktop e sidebar fixa (sempre visível), adiciona padding-left para empurrar o conteúdo
+    if (isDesktop()) {
+      if (!sidebarOpen) {
+        // Sidebar desktop está visível (fixed) e mobile sidebar fechada, ajustar padding-left no body
+        document.body.style.paddingLeft = `${SIDEBAR_WIDTH}px`;
+      } else {
+        // Se sidebar mobile está aberta (sobrepõe tudo), remove padding-left do body
+        document.body.style.paddingLeft = "";
+      }
     } else {
-      document.body.style.overflow = "";
+      // Em telas mobile remove o padding-left do body
+      document.body.style.paddingLeft = "";
     }
+
+    // Ouça resize para ajustar padding dinamicamente quando mudar a largura da janela
+    const handleResize = () => {
+      if (isDesktop() && !sidebarOpen) {
+        document.body.style.paddingLeft = `${SIDEBAR_WIDTH}px`;
+      } else {
+        document.body.style.paddingLeft = "";
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+
     return () => {
       document.body.style.overflow = "";
+      document.body.style.paddingLeft = "";
+      window.removeEventListener("resize", handleResize);
     };
   }, [sidebarOpen]);
 
   return (
-    <div className="flex flex-col min-h-screen">
-      {/* Mobile Top Navbar — escondida quando sidebar está aberta */}
+    <>
+      {/* Topbar mobile */}
       {!sidebarOpen && (
         <div className="md:hidden fixed top-0 left-0 right-0 z-50 w-full bg-purple-800 text-white p-4 flex justify-between items-center">
           <div className="flex items-center">
-            <Image
-              src="/png/logo.png"
-              alt="FeedToken logo"
-              width={28}
-              height={28}
-              className="mr-2"
-            />
+            <Image src="/png/logo.png" alt="FeedToken logo" width={28} height={28} className="mr-2" />
             <span className="font-bold text-lg">FeedToken</span>
           </div>
-          <button
-            aria-label="Abrir menu"
-            onClick={() => setSidebarOpen(true)}
-            className="focus:outline-none"
-          >
+          <button aria-label="Abrir menu" onClick={() => setSidebarOpen(true)}>
             <Menu size={24} />
           </button>
         </div>
       )}
 
-      {/* Fixed Sidebar (desktop) */}
+      {/* Sidebar desktop (fixa no topo) */}
       <div className="hidden md:flex fixed top-0 left-0 z-50 h-screen w-56 bg-gradient-to-b from-purple-800 to-purple-900 text-white flex-col justify-between p-4">
-        <SidebarContent
-          menuItems={menuItems}
-          selectedKey={selectedKey}
-          companyInfo={companyInfo}
-        />
+        <SidebarContent selectedKey={selectedKey} companyInfo={companyInfo} />
       </div>
 
-      {/* Sidebar Mobile Drawer */}
+      {/* Sidebar mobile */}
       {sidebarOpen && (
         <>
-          {/* Overlay */}
-          <div
-            className="fixed inset-0 bg-black bg-opacity-50 z-40"
-            onClick={() => setSidebarOpen(false)}
-          />
-          {/* Sidebar */}
+          <div className="fixed inset-0 bg-black bg-opacity-50 z-40" onClick={() => setSidebarOpen(false)} />
           <div className="fixed top-0 left-0 z-50 h-full w-56 bg-gradient-to-b from-purple-800 to-purple-900 text-white flex flex-col justify-between p-4">
-            <SidebarContent
-              menuItems={menuItems}
-              selectedKey={selectedKey}
-              companyInfo={companyInfo}
-            />
+            <SidebarContent selectedKey={selectedKey} companyInfo={companyInfo} />
           </div>
-          {/* Botão de fechar */}
           <button
             aria-label="Fechar menu"
             onClick={() => setSidebarOpen(false)}
@@ -110,36 +107,20 @@ const Sidebar: React.FC<SidebarProps> = ({ menuItems, companyInfo, children }) =
           </button>
         </>
       )}
-
-      {/* Main Content */}
-      <main className={`flex-1 w-full`}>
-        {children}
-      </main>
-    </div>
+    </>
   );
 };
 
 type SidebarContentProps = {
-  menuItems: MenuItem[];
   selectedKey: MenuItem["key"];
   companyInfo: CompanyInfo;
 };
 
-const SidebarContent: React.FC<SidebarContentProps> = ({
-  menuItems,
-  selectedKey,
-  companyInfo,
-}) => (
+const SidebarContent: React.FC<SidebarContentProps> = ({ selectedKey, companyInfo }) => (
   <>
     <div>
       <div className="flex items-center justify-center mt-4 mb-8">
-        <Image
-          src="/png/logo.png"
-          alt="FeedToken logo"
-          width={32}
-          height={32}
-          className="rounded-md mr-2"
-        />
+        <Image src="/png/logo.png" alt="FeedToken logo" width={32} height={32} className="rounded-md mr-2" />
         <span className="font-bold text-lg">FeedToken</span>
       </div>
       <ul className="space-y-4">
@@ -153,7 +134,7 @@ const SidebarContent: React.FC<SidebarContentProps> = ({
                   isActive ? "bg-white bg-opacity-20" : ""
                 }`}
               >
-                {iconMap[item.key]}
+                {item.icon}
                 <span>{item.label}</span>
               </a>
             </li>
@@ -161,7 +142,7 @@ const SidebarContent: React.FC<SidebarContentProps> = ({
         })}
       </ul>
     </div>
-    <CompanyProfile company={companyInfo} settingsUrl={""} />
+    <CompanyProfile company={companyInfo} settingsUrl="" />
   </>
 );
 
