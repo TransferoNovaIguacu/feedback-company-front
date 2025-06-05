@@ -4,8 +4,9 @@ import { useInView } from "react-intersection-observer";
 
 const ProgressBar = () => {
   const total = 8;
-  const [current, setCurrent] = useState(4); // você pode atualizar esse valor via lógica externa, se quiser
-  const progress = Math.min(current / total, 1) * 100;
+  const [current, setCurrent] = useState(120); // só como exemplo: 9 vai ser limitado a 8
+  const clampedCurrent = Math.min(current, total); // garante que não passe do total
+  const progress = (clampedCurrent / total) * 100;
 
   const controls = useAnimation();
   const { ref, inView } = useInView({
@@ -26,8 +27,8 @@ const ProgressBar = () => {
       className="w-full max-w-md p-4 bg-[#1e1e2f] text-white rounded-lg"
     >
       <div className="flex justify-between mb-1 text-sm font-medium">
-        <span className="opacity-90 text-gray-400">Progresso</span>
-        <span>{current} de {total}</span>
+        <span>Progresso</span>
+        <span>{clampedCurrent} de {total}</span>
       </div>
       <div className="w-full h-2.5 bg-gray-700 rounded-full overflow-hidden">
         <motion.div
