@@ -1,8 +1,7 @@
 "use client";
 
 import Head from 'next/head';
-import ComentarioBox from '../components/comentario';
-import TokenBalance from '../components/TokenBalance';
+import ProgressBar from '../components/progress-bar';
 
 export default function EmConstrucao() {
 
