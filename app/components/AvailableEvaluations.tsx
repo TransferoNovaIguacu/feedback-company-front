@@ -28,7 +28,7 @@ export default function AvailableEvaluations() {
             reward: "+60 FTK",
             rewardBg: "bg-[#282B33]",
             rewardText: "text-white",
-            href: "/en-construcao",
+            href: "/auth/login",
           },
           {
             id: 2,
@@ -40,7 +40,7 @@ export default function AvailableEvaluations() {
             reward: "+120 FTK",
             rewardBg: "bg-[#5A388D]",
             rewardText: "text-white",
-            href: "/en-construcao",
+            href: "/auth/login",
           },
           {
             id: 3,
@@ -52,7 +52,7 @@ export default function AvailableEvaluations() {
             reward: "+85 FTK",
             rewardBg: "bg-[#285A38]",
             rewardText: "text-white",
-            href: "/en-construcao",
+            href: "/auth/login",
           },
         ];
         setEvaluations(mockData);

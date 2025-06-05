@@ -26,7 +26,7 @@ export default function CTA() {
                 <div className="flex flex-col md:flex-row justify-center gap-5 py-3 px-1 mb-9">
 
                     {/* Define que o botão só ocupa a largura do conteúdo interno */}
-                    <a href="/en-construcao" className="w-fit">
+                    <a href="/auth/register" className="w-fit">
                         <Botao1 texto={"Cadastre-se como Avaliador."} />
                     </a>
 

@@ -14,7 +14,7 @@ export default function HeroPage() {
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4">
                         <a
-                            href="/en-construcao"
+                            href="/auth/register"
                             className="bg-gradient-to-r from-[#3f80f6] to-[#895df6] hover:opacity-90 text-white px-6 py-3 rounded-xl font-semibold text-center"
                         >
                             Começar como Avaliador
