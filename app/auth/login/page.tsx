@@ -1,6 +1,8 @@
 
 import Image from "next/image";
-import Head from "next/head";
+import Head from "next/head"; 
+import backgroundft from "@/public/png/backgroundft.png";
+import logoo from "@/public/svg/logoo.svg";
 
 export default function Login() {
   return (
@@ -8,11 +10,11 @@ export default function Login() {
       <Head>
         <title>Login | FeedToken</title>
       </Head>
-      <div className="flex flex-col md:flex-row h-screen bg-white">
+      <div className="flex flex-col md:flex-row h-screen text-purple-950 bg-white">
         {/* Lado esquerdo: visível só no desktop */}
         <div className="hidden md:block md:w-1/2 bg-gradient-to-t from-primary to-secondary relative">
           <Image
-            src="/backgroundft.png"
+            src={backgroundft}
             alt="Ethereum background"
             layout="fill"
             objectFit="cover"
@@ -27,7 +29,7 @@ export default function Login() {
           <div className="w-full max-w-md px-6 py-12">
             <div className="flex items-center mb-8">
               <Image
-                src="/logo.svg"
+                src={logoo}
                 alt="FeedToken logo"
                 width={40}
                 height={40}
@@ -38,7 +40,7 @@ export default function Login() {
 
             <form className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-primary">Login</label>
+                <label className="block text-sm font-medium text-purple-700">Login</label>
                 <input
                   type="text"
                   className="mt-1 block w-full rounded-md border border-purple-700 shadow-sm focus:border-primary focus:ring-primary px-4 py-2 text-black"
@@ -46,14 +48,14 @@ export default function Login() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-primary">Senha</label>
+                <label className="block text-sm font-medium purple-700">Senha</label>
                 <input
                   type="password"
                   className="mt-1 block w-full rounded-md border border-purple-700 shadow-sm focus:border-primary focus:ring-primary px-4 py-2"
                 />
               </div>
 
-              <div className="text-right text-sm text-primary hover:underline cursor-pointer">
+              <div className="text-right text-sm text-purple-700 hover:underline cursor-pointer">
                 Esqueci a senha
               </div>
 
