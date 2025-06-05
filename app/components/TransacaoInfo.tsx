@@ -12,7 +12,7 @@ function App() {
       valor: 3500.00,
       tipo: 'recebimento',
       data: '01/06/2025',
-      time: '09:00', // Adicionei o campo time, que é obrigatório na interface
+      time: '09:00', 
     },
     {
       id: '2',

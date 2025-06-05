@@ -3,6 +3,36 @@
 import React, { useState } from 'react';
 import { ArrowDownCircle, ArrowUpCircle } from 'lucide-react';
 
+// essa foi a unica maneira que entendi para converter do yyyy-mm-dd para dd-mm-yyyy pt-br 
+function parseDatePtBr(dataPtBr: string): Date {
+  const [dia, mes, ano] = dataPtBr.split('/');
+  return new Date(`${ano}-${mes}-${dia}`);
+}
+
+
+// Colocando as funçoes para ontem/hoje, não entendi muito o processo mais e isso kk
+function formatarDataComHorario(dataTransacao: string, horario: string): string {
+  const hoje = new Date();
+  const transacao = parseDatePtBr(dataTransacao); //Aqui chamei meu function parseDatePtBr (converte)
+
+  hoje.setHours(0, 0, 0, 0);
+  transacao.setHours(0, 0, 0, 0);
+
+  const diffEmdias = (hoje.getTime() - transacao.getTime()) / (1000 * 60 * 60 * 24);
+
+  let dataFormatada = '';
+
+  if (diffEmdias === 0) {
+    dataFormatada = 'Hoje';
+  } else if (diffEmdias === 1) {
+    dataFormatada = 'Ontem';
+  } else {
+    dataFormatada = transacao.toLocaleDateString('pt-BR');
+  }
+
+  return `${dataFormatada}, ${horario}`;
+}
+
 export interface CardTransacaoType {
   id: string;
   descricao: string;
@@ -45,23 +75,15 @@ export function CardTransacao({ transacaoInfo }: CardTransacaoProps) {
           {icon}
           <div className="flex flex-col">
             <p className="text-white text-lg font-semibold">{descricao}</p>
-            <p className="text-gray-400 text-sm">{time}</p>
+            <p className="text-gray-300 text-sm">
+              {formatarDataComHorario(data, time)}
+            </p>
           </div>
         </div>
         <div className="flex flex-col items-end">
           <p className={`text-xl font-bold ${textColorClass}`}>{formattedValor}</p>
           <span className="text-gray-500 text-sm capitalize">{tipo}</span>
         </div>
-      </div>
-
-      {/* Parte expansível */}
-      <div
-        className={`overflow-hidden transition-all duration-300 ${
-          expandido ? 'max-h-20 mt-4 opacity-100' : 'max-h-0 opacity-0'
-        }`}
-      >
-        <hr className="border-gray-700 my-2" />
-        <p className="text-gray-300 text-sm">Data: {data}</p>
       </div>
     </div>
   );
