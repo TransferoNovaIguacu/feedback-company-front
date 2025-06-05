@@ -4,6 +4,7 @@ import ComoFunciona from "./components/Como_funciona";
 import Engajamento from "./components/Engajamento";
 import HeroPage from "./components/HeroPage";
 import { Navbar } from "./components/Navbar";
+import TransacaoInfo from "./components/TransacaoInfo";
 import { Footer } from "./components/footer";
 
 export default function Home() {
@@ -16,6 +17,7 @@ export default function Home() {
       <AvailableEvaluations />
       <CTA />
       <Footer />
+      <TransacaoInfo />
     </>
   );
 }
