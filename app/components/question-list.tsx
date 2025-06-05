@@ -44,7 +44,7 @@ class Questionario extends React.Component<{}, State> {
     novasRespostas[perguntaIndex] = resposta;
     this.setState({ respostasSelecionadas: novasRespostas });
 
-    // Espera 2 segundos e redireciona
+    // Espera 1 segundo e redireciona
     setTimeout(() => {
       window.location.href = '/'; // substitua pela URL que quiser
     }, 1000);
@@ -56,11 +56,11 @@ class Questionario extends React.Component<{}, State> {
         key={index}
         className="bg-[#1b1e33] text-white p-6 rounded-2xl shadow-md w-full max-w-2xl mx-auto mb-8"
       >
-        <div className="flex items-center mb-2">
-          <span className="bg-blue-900 text-blue-400 text-sm font-semibold px-3 py-1 rounded-full mr-2">
+        <div className="flex flex-col items-center mb-2 sm:flex-row sm:items-center sm:justify-start">
+          <span className="bg-blue-900 text-blue-400 text-sm font-semibold px-3 py-1 rounded-full mb-2 sm:mb-0 sm:mr-2">
             Pergunta {index + 1}
           </span>
-          <h3 className="text-lg font-semibold">{pergunta.titulo}</h3>
+          <h3 className="text-lg font-semibold text-left w-full sm:w-auto">{pergunta.titulo}</h3>
         </div>
         <p className="text-gray-400 mb-6">{pergunta.descricao}</p>
 
@@ -81,9 +81,7 @@ class Questionario extends React.Component<{}, State> {
                   name={`pergunta-${index}`}
                   value={resposta}
                   checked={isSelected}
-                  onChange={function(this: Questionario) {
-                    this.handleChange(index, resposta);
-                  }.bind(this)}
+                  onChange={() => this.handleChange(index, resposta)}
                 />
                 <div
                   className={`w-5 h-5 rounded-full border-2 flex items-center justify-center
