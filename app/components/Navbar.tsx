@@ -14,8 +14,8 @@ export function Navbar(): JSX.Element {
   const navigation = [
     { name: "Início", href: "/" },
     { name: "Como Funciona", href: "/en-construcao" },
-    { name: "Para Empresas", href: "/en-construcao" },
-    { name: "Para Avaliadores", href: "/en-construcao" },
+    { name: "Para Empresas", href: "/auth/login" },
+    { name: "Para Avaliadores", href: "/auth/login" },
   ];
 
   return (
@@ -88,7 +88,7 @@ export function Navbar(): JSX.Element {
           <div className="absolute inset-y-0 right-0 hidden items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0 sm:flex">
             <div className="flex space-x-4">
               {/* Botão Entrar com gradiente */}
-              <a href="/en-construcao">
+              <a href="/auth/login">
                 <Botao1 texto="Entrar" />
               </a>
               {/* Botão Cadastrar com fundo escuro */}
