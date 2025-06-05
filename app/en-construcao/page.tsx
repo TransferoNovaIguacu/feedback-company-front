@@ -1,7 +1,7 @@
 "use client";
 
 import Head from 'next/head';
-import Questionario from '../components/question-list';
+import Questionario from '../components/Questionario';
 
 export default function EmConstrucao() {
 
