@@ -4,6 +4,7 @@ import ComoFunciona from "./components/Como_funciona";
 import Engajamento from "./components/Engajamento";
 import HeroPage from "./components/HeroPage";
 import { Navbar } from "./components/Navbar";
+import TokenBalance from "./components/TokenBalance";
 import { Footer } from "./components/footer";
 
 export default function Home() {

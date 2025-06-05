@@ -12,7 +12,7 @@ function formatTokens(value: number): string {
   return value.toString();
 }
 
-function TokenBalance(props: TokenBalanceProps) {
+export default function TokenBalance(props: TokenBalanceProps) {
   const [hasMounted, setHasMounted] = useState(false);
 
   useEffect(function () {
@@ -22,16 +22,14 @@ function TokenBalance(props: TokenBalanceProps) {
   if (!hasMounted) return null;
 
   return (
-    <div className="bg-[#0E1321] text-white px-4 py-3 rounded-full flex items-center space-x-3 shadow-md w-fit">
+    <div className="bg-[#0E1321] bg-opacity-70 text-white px-5 py-2 rounded-full flex items-center space-x-3 shadow-md w-fit">
       <div>
         <p className="text-sm text-gray-400">Your Balance</p>
         <p className="text-xl font-semibold">{formatTokens(props.tokens)} Tokens</p>
       </div>
-      <div className="bg-[#1F2535] p-2 rounded-full">
+      <div className="bg-[#1F2535] bg-opacity-30 p-2 rounded-full">
         <Wallet className="text-blue-400" size={24} />
       </div>
     </div>
   );
 }
-
-export default TokenBalance;
