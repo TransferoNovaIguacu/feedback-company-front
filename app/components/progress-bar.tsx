@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import { motion, useAnimation } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 
-const ProgressBar = () => {
+function ProgressBar() {
   const total = 8;
-  const [current, setCurrent] = useState(120); // só como exemplo: 9 vai ser limitado a 8
-  const clampedCurrent = Math.min(current, total); // garante que não passe do total
+  const [current, setCurrent] = useState(3); // exemplo: 9 vai ser limitado a 8
+  const clampedCurrent = Math.min(current, total);
   const progress = (clampedCurrent / total) * 100;
 
   const controls = useAnimation();
@@ -13,7 +13,7 @@ const ProgressBar = () => {
     threshold: 0.5,
   });
 
-  useEffect(() => {
+  useEffect(function () {
     if (inView) {
       controls.start({ width: `${progress}%` });
     } else {
@@ -40,6 +40,6 @@ const ProgressBar = () => {
       </div>
     </div>
   );
-};
+}
 
 export default ProgressBar;
