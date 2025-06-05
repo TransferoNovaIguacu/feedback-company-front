@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { ThumbsUp, ThumbsDown, MoreHorizontal } from 'lucide-react';
 
 // Adicionando IDs únicos para cada feedback
@@ -186,13 +186,6 @@ const initialFeedbacksData = [
     rating: "Muito útil"
   }
 ];
-const toggleLike = (id: number, type: "up" | "down") => {
-  setLiked((prev) => ({
-    ...prev,
-    [id]: prev[id] === type ? null : type
-  }));
-};
-
 
 const getRatingStyle = (rating: string) => {
   switch (rating) {
@@ -208,24 +201,135 @@ const truncateText = (text: string, maxLength: number) => {
   return text.slice(0, maxLength) + '...';
 };
 
-const formatCustomDate = (date: Date) => {
-  const now = new Date();
-  const isToday = date.toDateString() === now.toDateString();
-
-  const yesterday = new Date(now);
-  yesterday.setDate(now.getDate() - 1);
-  const isYesterday = date.toDateString() === yesterday.toDateString();
-
-  const time = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-  if (isToday) return `Hoje, ${time}`;
-  if (isYesterday) return `Ontem, ${time}`;
-
-  return `${date.getDate()} ${date.toLocaleString('pt-BR', { month: 'short' })} ${date.getFullYear()}`;
+// Componente de linha para desktop (crucial para a solução)
+const FeedbackRow = ({
+  item,
+  formatCustomDate,
+  toggleLike,
+  liked,
+  openDropdownId,
+  setOpenDropdownId,
+  updateFeedbackRating,
+  registerDropdownRef
+}: {
+  item: any;
+  formatCustomDate: (timestamp: number) => string;
+  toggleLike: (id: number, type: "up" | "down") => void;
+  liked: { [key: number]: "up" | "down" | null };
+  openDropdownId: number | null;
+  setOpenDropdownId: React.Dispatch<React.SetStateAction<number | null>>;
+  updateFeedbackRating: (id: number, newRating: string) => void;
+  registerDropdownRef: (id: number, ref: HTMLDivElement | null) => void;
+}) => {
+  return (
+    <tr className="border-b text-sm text-black">
+      <td className="p-2 flex items-center gap-2">
+        <div className="rounded-full w-8 h-8 bg-purple-200 text-purple-800 flex items-center justify-center font-bold text-sm">
+          {item.initials}
+        </div>
+        <div>
+          <div className="font-semibold text-black">{item.user}</div>
+          <div className="text-xs text-gray-600">Nível {item.Nível} Avaliador</div>
+        </div>
+      </td>
+      <td className="p-2">{truncateText(item.feedback, 100)}</td>
+      <td className="p-2 text-sm text-black opacity-60">
+        {formatCustomDate(item.date)}
+      </td>
+      <td className="p-2">
+        <span className={`text-xs px-2 py-1 rounded ${getRatingStyle(item.rating)}`}>
+          {item.rating}
+        </span>
+      </td>
+      <td className="p-3 flex items-center gap-2">
+        <ThumbsUp
+          size={18}
+          className={`cursor-pointer ${liked[item.id] === "up" ? "text-purple-600" : "text-gray-400"}`}
+          onClick={() => toggleLike(item.id, "up")}
+        />
+        <ThumbsDown
+          size={18}
+          className={`cursor-pointer ${liked[item.id] === "down" ? "text-red-600" : "text-gray-400"}`}
+          onClick={() => toggleLike(item.id, "down")}
+        />
+        
+        <div 
+          className="relative" 
+          ref={(ref) => registerDropdownRef(item.id, ref)}
+        >
+          <MoreHorizontal 
+            size={18} 
+            className="text-gray-400 cursor-pointer" 
+            onClick={() => setOpenDropdownId(openDropdownId === item.id ? null : item.id)}
+          />
+          
+          {openDropdownId === item.id && (
+            <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-10">
+              <div className="py-1">
+                <button 
+                  className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                  onClick={() => updateFeedbackRating(item.id, "Muito útil")}
+                >
+                  Muito útil
+                </button>
+                <button 
+                  className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                  onClick={() => updateFeedbackRating(item.id, "Útil")}
+                >
+                  Útil
+                </button>
+                <button 
+                  className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                  onClick={() => updateFeedbackRating(item.id, "Não Útil")}
+                >
+                  Não Útil
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      </td>
+    </tr>
+  );
 };
 
 export default function FeedbackTable() {
-  const [feedbacks, setFeedbacks] = useState(initialFeedbacksData);
+  const [isMounted, setIsMounted] = useState(false);
+  
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  const formatCustomDate = useCallback((timestamp: number) => {
+    if (!isMounted) return '';
+    
+    const date = new Date(timestamp);
+    const now = new Date();
+    
+    const isToday = date.toDateString() === now.toDateString();
+    const isYesterday = new Date(now.setDate(now.getDate() - 1)).toDateString() === date.toDateString();
+
+    const time = date.toLocaleTimeString([], { 
+      hour: '2-digit', 
+      minute: '2-digit'
+    });
+
+    if (isToday) return `Hoje, ${time}`;
+    if (isYesterday) return `Ontem, ${time}`;
+
+    return `${date.getDate()} ${date.toLocaleString('pt-BR', { 
+      month: 'short'
+    })} ${date.getFullYear()}`;
+  }, [isMounted]);
+
+  // Converter datas para timestamp
+  const [feedbacks, setFeedbacks] = useState(() => 
+    initialFeedbacksData.map(fb => ({
+      ...fb,
+      date: fb.date.getTime()
+    }))
+  );
+  
   const [currentPage, setCurrentPage] = useState(1);
   const [sortOrder, setSortOrder] = useState("latest");
   const [liked, setLiked] = useState<{ [key: number]: "up" | "down" | null }>({});
@@ -233,7 +337,7 @@ export default function FeedbackTable() {
   const [ratingFilter, setRatingFilter] = useState("All");
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [openDropdownId, setOpenDropdownId] = useState<number | null>(null);
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const dropdownRefs = useRef<{ [key: number]: HTMLDivElement | null }>({});
 
   // Atualizar itemsPerPage baseado no tamanho da tela
   useEffect(() => {
@@ -254,34 +358,39 @@ export default function FeedbackTable() {
   // Fechar dropdown ao clicar fora
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setOpenDropdownId(null);
+      if (openDropdownId !== null) {
+        const dropdownElement = dropdownRefs.current[openDropdownId];
+        if (dropdownElement && !dropdownElement.contains(event.target as Node)) {
+          setOpenDropdownId(null);
+        }
       }
     };
 
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+  }, [openDropdownId]);
 
-  const updateFeedbackRating = (id: number, newRating: string) => {
-    setFeedbacks(prevFeedbacks => 
-      prevFeedbacks.map(feedback => 
-        feedback.id === id ? { ...feedback, rating: newRating } : feedback
+  // Função de atualização do rating otimizada
+  const updateFeedbackRating = useCallback((id: number, newRating: string) => {
+    setFeedbacks(prev => 
+      prev.map(fb => 
+        fb.id === id ? { ...fb, rating: newRating } : fb
       )
     );
     setOpenDropdownId(null);
-  };
+  }, []);
 
+  // Cálculo das listas de feedbacks
   const filteredFeedbacks = feedbacks
-    .filter(f =>
+    .filter(f => 
       f.user.toLowerCase().includes(searchTerm.toLowerCase()) ||
       f.feedback.toLowerCase().includes(searchTerm.toLowerCase())
     )
     .filter(f => ratingFilter === "All" || f.rating === ratingFilter);
 
   const sortedFeedbacks = [...filteredFeedbacks].sort((a, b) => {
-    if (sortOrder === "latest") return b.date.getTime() - a.date.getTime();
-    if (sortOrder === "oldest") return a.date.getTime() - b.date.getTime();
+    if (sortOrder === "latest") return b.date - a.date;
+    if (sortOrder === "oldest") return a.date - b.date;
     return a.user.localeCompare(b.user);
   });
 
@@ -296,12 +405,18 @@ export default function FeedbackTable() {
   const endIndex = Math.min(currentPage * itemsPerPage, filteredFeedbacks.length);
   const totalResults = filteredFeedbacks.length;
 
-  const toggleLike = (id: number, type: "up" | "down") => {
-    setLiked((prev) => ({
-      ...prev,
-      [id]: prev[id] === type ? null : type
+  const toggleLike = useCallback((id: number, type: "up" | "down") => {
+    setLiked(prev => ({ 
+      ...prev, 
+      [id]: prev[id] === type ? null : type 
     }));
-  };
+  }, []);
+
+  const registerDropdownRef = useCallback((id: number, ref: HTMLDivElement | null) => {
+    if (ref) {
+      dropdownRefs.current[id] = ref;
+    }
+  }, []);
 
   return (
     <div className="rounded-xl shadow-sm bg-white p-4 sm:p-6 text-black border border-gray-200 mx-2 sm:mx-0">
@@ -360,71 +475,17 @@ export default function FeedbackTable() {
           </thead>
           <tbody>
             {paginatedFeedbacks.map((item) => (
-              <tr key={item.id} className="border-b text-sm text-black">
-                <td className="p-2 flex items-center gap-2">
-                  <div className="rounded-full w-8 h-8 bg-purple-200 text-purple-800 flex items-center justify-center font-bold text-sm">
-                    {item.initials}
-                  </div>
-                  <div>
-                    <div className="font-semibold text-black">{item.user}</div>
-                    <div className="text-xs text-gray-600">Nível {item.Nível} Avaliador</div>
-                  </div>
-                </td>
-                <td className="p-2">{truncateText(item.feedback, 100)}</td>
-                <td className="p-2 text-sm text-black opacity-60">
-                  {formatCustomDate(item.date)}
-                </td>
-                <td className="p-2">
-                  <span className={`text-xs px-2 py-1 rounded ${getRatingStyle(item.rating)}`}>
-                    {item.rating}
-                  </span>
-                </td>
-                <td className="p-3 flex items-center gap-2">
-                  <ThumbsUp
-                    size={18}
-                    className={`cursor-pointer ${liked[item.id] === "up" ? "text-purple-600" : "text-gray-400"}`}
-                    onClick={() => toggleLike(item.id, "up")}
-                  />
-                  <ThumbsDown
-                    size={18}
-                    className={`cursor-pointer ${liked[item.id] === "down" ? "text-red-600" : "text-gray-400"}`}
-                    onClick={() => toggleLike(item.id, "down")}
-                  />
-                  
-                  <div className="relative" ref={dropdownRef}>
-                    <MoreHorizontal 
-                      size={18} 
-                      className="text-gray-400 cursor-pointer" 
-                      onClick={() => setOpenDropdownId(openDropdownId === item.id ? null : item.id)}
-                    />
-                    
-                    {openDropdownId === item.id && (
-                      <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-10">
-                        <div className="py-1">
-                          <button 
-                            className="block w-full text-left px-4 py-2 hover:bg-gray-100"
-                            onClick={() => updateFeedbackRating(item.id, "Muito útil")}
-                          >
-                            Muito útil
-                          </button>
-                          <button 
-                            className="block w-full text-left px-4 py-2 hover:bg-gray-100"
-                            onClick={() => updateFeedbackRating(item.id, "Útil")}
-                          >
-                            Útil
-                          </button>
-                          <button 
-                            className="block w-full text-left px-4 py-2 hover:bg-gray-100"
-                            onClick={() => updateFeedbackRating(item.id, "Não Útil")}
-                          >
-                            Não Útil
-                          </button>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </td>
-              </tr>
+              <FeedbackRow
+                key={item.id}
+                item={item}
+                formatCustomDate={formatCustomDate}
+                toggleLike={toggleLike}
+                liked={liked}
+                openDropdownId={openDropdownId}
+                setOpenDropdownId={setOpenDropdownId}
+                updateFeedbackRating={updateFeedbackRating}
+                registerDropdownRef={registerDropdownRef}
+              />
             ))}
           </tbody>
         </table>
@@ -469,7 +530,10 @@ export default function FeedbackTable() {
                   onClick={() => toggleLike(item.id, "down")}
                 />
                 
-                <div className="relative" ref={dropdownRef}>
+                <div 
+                  className="relative" 
+                  ref={(ref) => registerDropdownRef(item.id, ref)}
+                >
                   <MoreHorizontal 
                     size={18} 
                     className="text-gray-400 cursor-pointer" 
@@ -542,8 +606,4 @@ export default function FeedbackTable() {
       </div>
     </div>
   );
-}
-
-function setLiked(arg0: (prev: any) => any) {
-  throw new Error('Function not implemented.');
 }
