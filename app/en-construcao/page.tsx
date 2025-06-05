@@ -48,8 +48,6 @@ export default function EmConstrucao() {
         </div>
       </div>
 
-      <FeedbackTable></FeedbackTable>
-
       <style jsx>{`
         .progress-bar .animate-progress {
           animation: progress 3s infinite;

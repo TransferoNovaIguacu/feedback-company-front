@@ -2,6 +2,8 @@
 
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { ThumbsUp, ThumbsDown, MoreHorizontal } from 'lucide-react';
+import FeedbackRow from './FeedbackRowItem';
+import getRatingStyle from '@/utils/defineUtilit';
 
 // Adicionando IDs únicos para cada feedback
 const initialFeedbacksData = [
@@ -187,111 +189,6 @@ const initialFeedbacksData = [
   }
 ];
 
-const getRatingStyle = (rating: string) => {
-  switch (rating) {
-    case "Muito útil": return "bg-green-100 text-green-700";
-    case "Útil": return "bg-blue-100 text-blue-700";
-    case "Não Útil": return "bg-red-100 text-red-700";
-    default: return "bg-gray-100 text-gray-700";
-  }
-};
-
-const truncateText = (text: string, maxLength: number) => {
-  if (text.length <= maxLength) return text;
-  return text.slice(0, maxLength) + '...';
-};
-
-// Componente de linha para desktop (crucial para a solução)
-const FeedbackRow = ({
-  item,
-  formatCustomDate,
-  toggleLike,
-  liked,
-  openDropdownId,
-  setOpenDropdownId,
-  updateFeedbackRating,
-  registerDropdownRef
-}: {
-  item: any;
-  formatCustomDate: (timestamp: number) => string;
-  toggleLike: (id: number, type: "up" | "down") => void;
-  liked: { [key: number]: "up" | "down" | null };
-  openDropdownId: number | null;
-  setOpenDropdownId: React.Dispatch<React.SetStateAction<number | null>>;
-  updateFeedbackRating: (id: number, newRating: string) => void;
-  registerDropdownRef: (id: number, ref: HTMLDivElement | null) => void;
-}) => {
-  return (
-    <tr className="border-b text-sm text-black">
-      <td className="p-2 flex items-center gap-2">
-        <div className="rounded-full w-8 h-8 bg-purple-200 text-purple-800 flex items-center justify-center font-bold text-sm">
-          {item.initials}
-        </div>
-        <div>
-          <div className="font-semibold text-black">{item.user}</div>
-          <div className="text-xs text-gray-600">Nível {item.Nível} Avaliador</div>
-        </div>
-      </td>
-      <td className="p-2">{truncateText(item.feedback, 100)}</td>
-      <td className="p-2 text-sm text-black opacity-60">
-        {formatCustomDate(item.date)}
-      </td>
-      <td className="p-2">
-        <span className={`text-xs px-2 py-1 rounded ${getRatingStyle(item.rating)}`}>
-          {item.rating}
-        </span>
-      </td>
-      <td className="p-3 flex items-center gap-2">
-        <ThumbsUp
-          size={18}
-          className={`cursor-pointer ${liked[item.id] === "up" ? "text-purple-600" : "text-gray-400"}`}
-          onClick={() => toggleLike(item.id, "up")}
-        />
-        <ThumbsDown
-          size={18}
-          className={`cursor-pointer ${liked[item.id] === "down" ? "text-red-600" : "text-gray-400"}`}
-          onClick={() => toggleLike(item.id, "down")}
-        />
-        
-        <div 
-          className="relative" 
-          ref={(ref) => registerDropdownRef(item.id, ref)}
-        >
-          <MoreHorizontal 
-            size={18} 
-            className="text-gray-400 cursor-pointer" 
-            onClick={() => setOpenDropdownId(openDropdownId === item.id ? null : item.id)}
-          />
-          
-          {openDropdownId === item.id && (
-            <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-10">
-              <div className="py-1">
-                <button 
-                  className="block w-full text-left px-4 py-2 hover:bg-gray-100"
-                  onClick={() => updateFeedbackRating(item.id, "Muito útil")}
-                >
-                  Muito útil
-                </button>
-                <button 
-                  className="block w-full text-left px-4 py-2 hover:bg-gray-100"
-                  onClick={() => updateFeedbackRating(item.id, "Útil")}
-                >
-                  Útil
-                </button>
-                <button 
-                  className="block w-full text-left px-4 py-2 hover:bg-gray-100"
-                  onClick={() => updateFeedbackRating(item.id, "Não Útil")}
-                >
-                  Não Útil
-                </button>
-              </div>
-            </div>
-          )}
-        </div>
-      </td>
-    </tr>
-  );
-};
 
 export default function FeedbackTable() {
   const [isMounted, setIsMounted] = useState(false);
@@ -371,14 +268,14 @@ export default function FeedbackTable() {
   }, [openDropdownId]);
 
   // Função de atualização do rating otimizada
-  const updateFeedbackRating = useCallback((id: number, newRating: string) => {
-    setFeedbacks(prev => 
-      prev.map(fb => 
-        fb.id === id ? { ...fb, rating: newRating } : fb
-      )
-    );
-    setOpenDropdownId(null);
-  }, []);
+  // const updateFeedbackRating = useCallback((id: number, newRating: string) => {
+  //   setFeedbacks(prev => 
+  //     prev.map(fb => 
+  //       fb.id === id ? { ...fb, rating: newRating } : fb
+  //     )
+  //   );
+  //   setOpenDropdownId(null);
+  // }, []);
 
   // Cálculo das listas de feedbacks
   const filteredFeedbacks = feedbacks
@@ -483,7 +380,6 @@ export default function FeedbackTable() {
                 liked={liked}
                 openDropdownId={openDropdownId}
                 setOpenDropdownId={setOpenDropdownId}
-                updateFeedbackRating={updateFeedbackRating}
                 registerDropdownRef={registerDropdownRef}
               />
             ))}
@@ -545,22 +441,11 @@ export default function FeedbackTable() {
                       <div className="py-1">
                         <button 
                           className="block w-full text-left px-4 py-2 hover:bg-gray-100"
-                          onClick={() => updateFeedbackRating(item.id, "Muito útil")}
+                          
                         >
-                          Muito útil
+                          Visualizar
                         </button>
-                        <button 
-                          className="block w-full text-left px-4 py-2 hover:bg-gray-100"
-                          onClick={() => updateFeedbackRating(item.id, "Útil")}
-                        >
-                          Útil
-                        </button>
-                        <button 
-                          className="block w-full text-left px-4 py-2 hover:bg-gray-100"
-                          onClick={() => updateFeedbackRating(item.id, "Não Útil")}
-                        >
-                          Não Útil
-                        </button>
+                     
                       </div>
                     </div>
                   )}
