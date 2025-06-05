@@ -1,6 +1,7 @@
 "use client";
 
 import Head from 'next/head';
+import ProgressBar from '../components/progress-bar';
 
 export default function EmConstrucao() {
 
@@ -46,6 +47,8 @@ export default function EmConstrucao() {
           &copy; 2023 Transfero Academy Nova Iguaçu. Todos os direitos reservados.
         </div>
       </div>
+
+      <ProgressBar></ProgressBar>
 
       <style jsx>{`
         .progress-bar .animate-progress {
