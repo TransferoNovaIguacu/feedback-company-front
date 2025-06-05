@@ -1,12 +1,10 @@
 import AvailableEvaluations from "./components/AvailableEvaluations";
 import CTA from "./components/CTAInstitucional";
-import { CardTransacao, CardTransacaoType } from "./components/CardTransacoes";
 import ComoFunciona from "./components/Como_funciona";
 import Engajamento from "./components/Engajamento";
 import HeroPage from "./components/HeroPage";
 import { Navbar } from "./components/Navbar";
 import { Footer } from "./components/footer";
-
 
 export default function Home() {
   return (
