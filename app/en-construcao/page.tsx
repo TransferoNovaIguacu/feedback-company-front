@@ -1,7 +1,10 @@
 "use client";
 import Head from 'next/head';
+import FeedbackTable from '../components/Tabela_Com_filtro';
 
 export default function EmConstrucao() {
+
+
 
   return (
     <>
@@ -44,6 +47,8 @@ export default function EmConstrucao() {
           &copy; 2023 Transfero Academy Nova Iguaçu. Todos os direitos reservados.
         </div>
       </div>
+
+      <FeedbackTable></FeedbackTable>
 
       <style jsx>{`
         .progress-bar .animate-progress {
