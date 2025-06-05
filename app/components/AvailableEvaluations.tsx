@@ -1,47 +1,25 @@
-// app/Avaliacao/page.tsx
-"use client"; // Necessário para usar hooks como useState, useEffect e useRouter
+"use client";
 
 import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation"; // Importa o hook useRouter
-import { Botao2 } from "./Botao";
-
-// Definição do tipo para uma avaliação (opcional, mas boa prática com TypeScript)
-interface Evaluation {
-  id: string; // Adicione um ID para identificar a avaliação, vindo do backend
-  title: string;
-  company: string;
-  description: string;
-  time: string;
-  reward: string;
-  rewardBg: string;
-  rewardText: string;
-  href: string;
-}
+import { useRouter } from "next/navigation";
+import { CardAvaliacao, CardAvaliacaoType  } from "@/app/components/CardAvaliacao"; // Ajuste o caminho conforme sua estrutura
 
 export default function AvailableEvaluations() {
-  const [evaluations, setEvaluations] = useState<Evaluation[]>([]);
+  const [evaluations, setEvaluations] = useState<CardAvaliacaoType[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const router = useRouter(); // Inicializa o useRouter
+  const router = useRouter();
 
-  // Função para buscar dados do backend
   useEffect(() => {
     async function fetchEvaluations() {
       try {
         setLoading(true);
         setError(null);
-        // Exemplo de chamada de API. Substitua pelo seu endpoint real.
-        // const response = await fetch('/api/evaluations');
-        // if (!response.ok) {
-        //   throw new Error('Falha ao buscar avaliações');
-        // }
-        // const data: Evaluation[] = await response.json();
-        // setEvaluations(data);
 
-        // Por enquanto, usando dados estáticos para simular o backend
-        const mockData: Evaluation[] = [
+        // Simulação de chamada de API com dados estáticos
+        const mockData: CardAvaliacaoType[] = [
           {
-            id: "1",
+            id: 1,
             title: "App de Delivery",
             company: "FoodExpress Inc.",
             description:
@@ -53,7 +31,7 @@ export default function AvailableEvaluations() {
             href: "/en-construcao",
           },
           {
-            id: "2",
+            id: 2,
             title: "Fones de Ouvido Pro",
             company: "TechCorp",
             description:
@@ -65,7 +43,7 @@ export default function AvailableEvaluations() {
             href: "/en-construcao",
           },
           {
-            id: "3",
+            id: 3,
             title: "Serviço de Streaming",
             company: "MediaStream",
             description:
@@ -77,7 +55,7 @@ export default function AvailableEvaluations() {
             href: "/en-construcao",
           },
         ];
-        setEvaluations(mockData); // Define os dados mockados
+        setEvaluations(mockData);
       } catch (err) {
         if (err instanceof Error) {
           setError(err.message);
@@ -90,23 +68,13 @@ export default function AvailableEvaluations() {
     }
 
     fetchEvaluations();
-  }, []); // O array vazio garante que o useEffect rode apenas uma vez ao montar o componente
+  }, []);
 
-  // Função para lidar com o clique no botão "Participar"
-  const handleParticipateClick = () => {
-    router.push("/auth/login"); // Redireciona para a rota /auth/login
-  };
+
 
   return (
     <div className="bg-[#0e1125] w-full h-fit">
-      {/* Você pode incluir a Navbar aqui se quiser que ela apareça nesta rota */}
-      {/* Certifique-se de importar a Navbar se precisar dela aqui, por exemplo:
-      import { Navbar } from '@/components/Navbar';
-      <Navbar />
-      */}
       <main className="py-16 w-full">
-        {" "}
-        {/* Ajuste o padding se a Navbar estiver presente e for absoluta/fixa */}
         <section className="py-16 text-white flex flex-col justify-center items-center">
           <div className="max-w-7xl w-full">
             {/* Cabeçalho da seção */}
@@ -155,48 +123,7 @@ export default function AvailableEvaluations() {
               {!loading &&
                 !error &&
                 evaluations.map((evaluation) => (
-                  <div
-                    key={evaluation.id}
-                    className="bg-gray-950 rounded-lg p-6 shadow-lg flex flex-col bg-opacity-45"
-                  >
-                    <div className="flex justify-between items-start mb-4">
-                      <h3 className="text-xl font-semibold text-white">
-                        {evaluation.title}
-                      </h3>
-                      <span
-                        className={`${evaluation.rewardBg} ${evaluation.rewardText} text-sm font-medium px-3 py-1 rounded-full`}
-                      >
-                        {evaluation.reward}
-                      </span>
-                    </div>
-                    <p className="text-sm text-gray-400 mb-2">
-                      {evaluation.company}
-                    </p>
-                    <p className="text-gray-300 text-base flex-grow mb-4">
-                      {evaluation.description}
-                    </p>
-
-                    <div className="flex items-center text-gray-400 text-sm mt-auto mb-4">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="w-4 h-4 mr-1"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                        />
-                      </svg>
-                      {evaluation.time}
-                    </div>
-                    <a href={evaluation.href}>
-                      <Botao2 texto="Participar" />
-                    </a>
-                  </div>
+                  <CardAvaliacao CardAvaliacaoInfo={evaluation} key={evaluation.id}  /> 
                 ))}
             </div>
           </div>
