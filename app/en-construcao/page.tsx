@@ -2,6 +2,7 @@
 
 import Head from 'next/head';
 import TipoPesquisaSelector from '../components/TipoPesquisaSelector';
+import CommentRequestForm from '../components/criacao-comentario';
 
 export default function EmConstrucao() {
 
@@ -47,6 +48,8 @@ export default function EmConstrucao() {
           &copy; 2023 Transfero Academy Nova Iguaçu. Todos os direitos reservados.
         </div>
       </div>
+
+      <CommentRequestForm></CommentRequestForm>
 
       <style jsx>{`
         .progress-bar .animate-progress {
