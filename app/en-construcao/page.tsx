@@ -48,8 +48,6 @@ export default function EmConstrucao() {
         </div>
       </div>
 
-      <CommentRequestForm/>
-
       <style jsx>{`
         .progress-bar .animate-progress {
           animation: progress 3s infinite;
