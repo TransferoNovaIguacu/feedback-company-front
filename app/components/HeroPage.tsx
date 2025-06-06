@@ -21,7 +21,7 @@ export default function HeroPage() {
                         </a>
 
                         <a
-                            href="/en-construcao"
+                            href="/auth/register/company"
                             className="bg-[#3a3d4f] hover:bg-[#2a2d3e] text-white px-6 py-3 rounded-xl font-semibold text-center"
                         >
                             Sou uma Empresa

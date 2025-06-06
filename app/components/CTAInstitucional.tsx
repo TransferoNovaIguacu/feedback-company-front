@@ -31,7 +31,7 @@ export default function CTA() {
                     </a>
 
                     {/* Segundo botão com o mesmo ajuste de largura */}
-                    <a href="/en-construcao" className="w-fit">
+                    <a href="/auth/register/company" className="w-fit">
                         <Botao2 texto={"Sou uma empresa."} />
                     </a>
 

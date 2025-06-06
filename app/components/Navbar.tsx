@@ -115,8 +115,8 @@ export function Navbar(): JSX.Element {
             ))}
 
             <div className="mt-4 flex flex-col space-y-2">
-              <Botao1 texto="Entrar" />
-              <Botao2 texto="Cadastrar" />
+              <a href="/auth/login"><Botao1 texto="Entrar" /></a>
+              <a href="/auth/register"><Botao2 texto="Cadastrar" /></a>
             </div>
           </div>
         </div>
