@@ -22,7 +22,7 @@ export default function TokenBalance(props: TokenBalanceProps) {
   if (!hasMounted) return null;
 
   return (
-    <div className="bg-[#0E1321] bg-opacity-70 text-white px-5 py-2 rounded-full flex items-center space-x-3 shadow-md w-fit">
+    <div className="bg-[#0E1321] bg-opacity-70 h-12 text-white px-5 py-2 rounded-full flex items-center space-x-3 shadow-md w-fit">
       <div>
         <p className="text-sm text-gray-400">Your Balance</p>
         <p className="text-xl font-semibold">{formatTokens(props.tokens)} Tokens</p>
