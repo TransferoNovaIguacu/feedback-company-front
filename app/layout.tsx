@@ -7,6 +7,9 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "FeedToken",
   description: "Avalie seus sites favoritos e ganhe tokens",
+   icons: {
+    icon: '/svg/favicon.svg',
+  },
 };
 
 export default function RootLayout({
