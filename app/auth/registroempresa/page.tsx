@@ -114,7 +114,19 @@ export default function RegistroEmpresa() {
                 <input
                   type="password"
                   name="password"
-                  placeholder="********"
+                  placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;"
+                  className="mt-1 block w-full rounded-md border border-purple-700 shadow-sm focus:border-primary focus:ring-primary px-4 py-2"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-purple-700">
+                  Confirmar senha
+                </label>
+                <input
+                  type="password"
+                  name="confirmPassword"
+                  placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;"
                   className="mt-1 block w-full rounded-md border border-purple-700 shadow-sm focus:border-primary focus:ring-primary px-4 py-2"
                 />
               </div>
