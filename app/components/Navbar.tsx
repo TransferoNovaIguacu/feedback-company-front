@@ -92,7 +92,7 @@ export function Navbar(): JSX.Element {
                 <Botao1 texto="Entrar" />
               </a>
               {/* Botão Cadastrar com fundo escuro */}
-              <a href="/en-construcao">
+              <a href="/auth/register">
                 <Botao2 texto="Cadastrar" />
               </a>
             </div>
