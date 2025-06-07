@@ -10,43 +10,45 @@ import { FormDataPayload, validateFormData } from "@/utils/verifyForms";
 import api from "@/utils/axios";
 import { useRouter } from "next/navigation";
 
-
 type FormErrors = Partial<Record<keyof FormDataPayload, string>>;
 
 export default function Register() {
   const [errors, setErrors] = useState<FormErrors>({});
-  const router = useRouter()
+  const [loading, setLoading] = useState<boolean>(false);
+  const router = useRouter();
 
- const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
-  setErrors({});
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    setLoading(true);
+    e.preventDefault();
+    setErrors({});
 
-  const formData = new FormData(e.currentTarget);
-  const raw = Object.fromEntries(formData.entries());
+    const formData = new FormData(e.currentTarget);
+    const raw = Object.fromEntries(formData.entries());
 
-  const data: FormDataPayload = {
-    full_name: String(raw.name ?? "").trim(),
-    cpf: String(raw.cpf ?? "").trim(),
-    email: String(raw.email ?? "").trim(),
-    password1: String(raw.password ?? ""),
-    password2: String(raw.confirmPassword ?? ""),
+    const data: FormDataPayload = {
+      full_name: String(raw.name ?? "").trim(),
+      cpf: String(raw.cpf ?? "").trim(),
+      email: String(raw.email ?? "").trim(),
+      password1: String(raw.password ?? ""),
+      password2: String(raw.confirmPassword ?? ""),
+    };
+
+    const validationErrors = validateFormData(data);
+
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      setLoading(false);
+      return;
+    }
+
+    try {
+      api.post("auth/register/common/", data);
+      router.push("/auth/login");
+    } catch (error) {
+      setLoading(false);
+      console.error(error);
+    }
   };
-
-  const validationErrors = validateFormData(data);
-
-  if (Object.keys(validationErrors).length > 0) {
-    setErrors(validationErrors);
-    return;
-  }
-
-  try {
-    api.post("auth/register/common/", data)
-    router.push("/auth/login")
-  } catch (error) {
-    console.error(error)
-  }
-
- }
 
   return (
     <>
@@ -154,7 +156,9 @@ export default function Register() {
                   }`}
                   placeholder="********"
                   aria-invalid={!!errors.password1}
-                  aria-describedby={errors.password1 ? "password-error" : undefined}
+                  aria-describedby={
+                    errors.password1 ? "password-error" : undefined
+                  }
                 />
                 {errors.password1 && (
                   <p id="password-error" className="text-red-500 text-sm mt-1">
@@ -193,6 +197,11 @@ export default function Register() {
 
               <div className="text-center text-sm text-primary hover:underline cursor-pointer">
                 Já tem uma conta? <a href="/auth/login">Entrar</a>
+              </div>
+              <div className="!mt-2 text-center text-sm text-primary hover:underline cursor-pointer">
+                <a href="/auth/register/company">
+                  Quer se Cadastrar como Empresa?
+                </a>
               </div>
             </form>
           </div>

@@ -37,18 +37,20 @@ export default function Login() {
 
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
+      setLoading(false)
       return;
     }
 
     try {
       const response = await api.post("auth/login/", data);
-      localStorage.setItem('TOKEN', response.data.access)
-      localStorage.setItem('USER', JSON.stringify(response.data.user))
+      localStorage.setItem("TOKEN", response.data.access);
+      localStorage.setItem("USER", JSON.stringify(response.data.user));
       router.push("/common");
     } catch (error) {
       console.error(error);
     } finally {
       setLoading(false);
+      router.push("/auth/login")
     }
   };
   return (
@@ -136,12 +138,9 @@ export default function Login() {
 
               <Botao1 texto={loading ? "Entrando..." : "Entrar"} />
 
-              <a
-                href="/auth/register"
-                className="text-center text-sm text-primary hover:underline cursor-pointer"
-              >
-                Registrar
-              </a>
+              <div className="text-center text-sm text-primary hover:underline cursor-pointer">
+                <a href="/auth/register">Registrar</a>
+              </div>
             </form>
           </div>
         </div>

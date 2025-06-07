@@ -1,20 +1,61 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { FormEvent } from "react";
+import { FormEvent, useState } from "react";
 import InputMask from "react-input-mask";
 import Image from "next/image";
 import Head from "next/head";
 import backgroundft from "@/public/png/backgroundft.png";
 import logoo from "@/public/svg/logoo.svg";
 import { Botao1 } from "@/app/components/Botao";
+import {
+  FormDataPayloadRegisterCompany,
+  validationFormDataRegisterCompany,
+} from "@/utils/verifyForms";
+import api from "@/utils/axios";
+
+type FormErrorsRegisterCompany = Partial<
+  Record<keyof FormDataPayloadRegisterCompany, string>
+>;
 
 export default function RegistroEmpresa() {
-  const route = useRouter();
+  const [errors, setErrors] = useState<FormErrorsRegisterCompany>({});
+  const [loading, setLoading] = useState<boolean>(false)
+  const router = useRouter();
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    setLoading(true)
     e.preventDefault();
-    route.push("/en-construcao"); // Troque para a rota real depois
+    setErrors({});
+
+    const formData = new FormData(e.currentTarget);
+    const raw = Object.fromEntries(formData.entries());
+
+    const data: FormDataPayloadRegisterCompany = {
+      commercial_name: String(raw.name ?? "").trim(),
+      legal_name: String(raw.legal_name ?? ""),
+      cnpj: String(raw.cnpj ?? "").trim(),
+      email: String(raw.email ?? "").trim(),
+      password1: String(raw.password ?? ""),
+      password2: String(raw.confirmPassword ?? ""),
+    };
+
+    const validationErrors = validationFormDataRegisterCompany(data);
+
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      setLoading(false)
+      return;
+    }
+
+    try {
+      const response = await api.post("auth/register/company/", data);
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false)
+    }
   };
 
   return (
@@ -60,10 +101,23 @@ export default function RegistroEmpresa() {
                 </label>
                 <input
                   type="text"
-                  name="comercial_name"
+                  name="name"
                   placeholder="Nome fantasia da empresa"
-                  className="mt-1 block w-full rounded-md border border-purple-700 shadow-sm focus:border-primary focus:ring-primary px-4 py-2"
+                  className={`mt-1 block w-full rounded-md border px-4 py-2 text-black shadow-sm focus:ring-primary focus:border-primary ${
+                    errors.commercial_name
+                      ? "border-red-500"
+                      : "border-purple-700"
+                  }`}
+                  aria-invalid={!!errors.commercial_name}
+                  aria-describedby={
+                    errors.commercial_name ? "name-error" : undefined
+                  }
                 />
+                {errors.commercial_name && (
+                  <p id="name-error" className="text-red-500 text-sm mt-1">
+                    {errors.commercial_name}
+                  </p>
+                )}
               </div>
 
               <div>
@@ -74,8 +128,19 @@ export default function RegistroEmpresa() {
                   type="text"
                   name="legal_name"
                   placeholder="Razão social da empresa"
-                  className="mt-1 block w-full rounded-md border border-purple-700 shadow-sm focus:border-primary focus:ring-primary px-4 py-2"
+                  className={`mt-1 block w-full rounded-md border px-4 py-2 text-black shadow-sm focus:ring-primary focus:border-primary ${
+                    errors.legal_name ? "border-red-500" : "border-purple-700"
+                  }`}
+                  aria-invalid={!!errors.legal_name}
+                  aria-describedby={
+                    errors.legal_name ? "name-error" : undefined
+                  }
                 />
+                {errors.legal_name && (
+                  <p id="name-error" className="text-red-500 text-sm mt-1">
+                    {errors.legal_name}
+                  </p>
+                )}
               </div>
 
               <div>
@@ -89,10 +154,19 @@ export default function RegistroEmpresa() {
                       type="text"
                       name="cnpj"
                       placeholder="00.000.000/0001-00"
-                      className="mt-1 block w-full rounded-md border border-purple-700 shadow-sm focus:border-primary focus:ring-primary px-4 py-2"
+                      className={`mt-1 block w-full rounded-md border px-4 py-2 text-black shadow-sm focus:ring-primary focus:border-primary ${
+                        errors.cnpj ? "border-red-500" : "border-purple-700"
+                      }`}
+                      aria-invalid={!!errors.cnpj}
+                      aria-describedby={errors.cnpj ? "name-error" : undefined}
                     />
                   )}
                 </InputMask>
+                {errors.cnpj && (
+                  <p id="name-error" className="text-red-500 text-sm mt-1">
+                    {errors.cnpj}
+                  </p>
+                )}
               </div>
 
               <div>
@@ -100,11 +174,20 @@ export default function RegistroEmpresa() {
                   E-mail
                 </label>
                 <input
-                  type="email"
+                  type="text"
                   name="email"
                   placeholder="empresa@email.com"
-                  className="mt-1 block w-full rounded-md border border-purple-700 shadow-sm focus:border-primary focus:ring-primary px-4 py-2"
+                  className={`mt-1 block w-full rounded-md border px-4 py-2 text-black shadow-sm focus:ring-primary focus:border-primary ${
+                    errors.email ? "border-red-500" : "border-purple-700"
+                  }`}
+                  aria-invalid={!!errors.email}
+                  aria-describedby={errors.email ? "name-error" : undefined}
                 />
+                {errors.email && (
+                  <p id="name-error" className="text-red-500 text-sm mt-1">
+                    {errors.email}
+                  </p>
+                )}
               </div>
 
               <div>
@@ -115,8 +198,17 @@ export default function RegistroEmpresa() {
                   type="password"
                   name="password"
                   placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;"
-                  className="mt-1 block w-full rounded-md border border-purple-700 shadow-sm focus:border-primary focus:ring-primary px-4 py-2"
+                  className={`mt-1 block w-full rounded-md border px-4 py-2 text-black shadow-sm focus:ring-primary focus:border-primary ${
+                    errors.password1 ? "border-red-500" : "border-purple-700"
+                  }`}
+                  aria-invalid={!!errors.password1}
+                  aria-describedby={errors.password1 ? "name-error" : undefined}
                 />
+                {errors.password1 && (
+                  <p id="name-error" className="text-red-500 text-sm mt-1">
+                    {errors.password1}
+                  </p>
+                )}
               </div>
 
               <div>
@@ -127,15 +219,24 @@ export default function RegistroEmpresa() {
                   type="password"
                   name="confirmPassword"
                   placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;"
-                  className="mt-1 block w-full rounded-md border border-purple-700 shadow-sm focus:border-primary focus:ring-primary px-4 py-2"
+                  className={`mt-1 block w-full rounded-md border px-4 py-2 text-black shadow-sm focus:ring-primary focus:border-primary ${
+                    errors.password2 ? "border-red-500" : "border-purple-700"
+                  }`}
+                  aria-invalid={!!errors.password2}
+                  aria-describedby={errors.password2 ? "name-error" : undefined}
                 />
+                {errors.password2 && (
+                  <p id="name-error" className="text-red-500 text-sm mt-1">
+                    {errors.password2}
+                  </p>
+                )}
               </div>
 
-              <Botao1 texto="Registrar" />
+              <Botao1 texto={loading ? "Registrando...":"Registrar"} />
 
               <div
                 className="text-center text-sm text-primary hover:underline cursor-pointer"
-                onClick={() => route.push("/login")}
+                onClick={() => router.push("/login")}
               >
                 Já tem uma conta? Faça login
               </div>
