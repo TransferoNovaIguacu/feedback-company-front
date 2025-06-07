@@ -6,13 +6,50 @@ import backgroundft from "@/public/png/backgroundft.png";
 import logoo from "@/public/svg/logoo.svg";
 import { Botao1 } from "@/app/components/Botao";
 import { useRouter } from "next/navigation";
-import { FormEvent } from "react";
+import { FormEvent, useState } from "react";
+import {
+  FormDataPayloadLogin,
+  validationFormDataLogin,
+} from "@/utils/verifyForms";
+import api from "@/utils/axios";
+
+type FormErrors = Partial<Record<keyof FormDataPayloadLogin, string>>;
 
 export default function Login() {
-  const route = useRouter();
-  const handleSubmit = (e: FormEvent) => {
+  const [errors, setErrors] = useState<FormErrors>({});
+  const router = useRouter();
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    setLoading(true);
     e.preventDefault();
-    route.push("/en-construcao");
+    setErrors({});
+
+    const formData = new FormData(e.currentTarget);
+    const raw = Object.fromEntries(formData.entries());
+
+    const data: FormDataPayloadLogin = {
+      email: String(raw.email ?? "").trim(),
+      password: String(raw.password ?? ""),
+    };
+
+    const validationErrors = validationFormDataLogin(data);
+
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
+    try {
+      const response = await api.post("auth/login/", data);
+      localStorage.setItem('TOKEN', response.data.access)
+      localStorage.setItem('USER', JSON.stringify(response.data.user))
+      router.push("/common");
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   };
   return (
     <>
@@ -57,9 +94,19 @@ export default function Login() {
                 </label>
                 <input
                   type="text"
+                  name="email"
                   placeholder="meu@email.com"
-                  className="mt-1 block w-full rounded-md border border-purple-700 shadow-sm focus:border-primary focus:ring-primary px-4 py-2 text-black"
+                  className={`mt-1 block w-full rounded-md border px-4 py-2 text-black shadow-sm focus:ring-primary focus:border-primary ${
+                    errors.email ? "border-red-500" : "border-purple-700"
+                  }`}
+                  aria-invalid={!!errors.email}
+                  aria-describedby={errors.email ? "name-error" : undefined}
                 />
+                {errors.email && (
+                  <p id="name-error" className="text-red-500 text-sm mt-1">
+                    {errors.email}
+                  </p>
+                )}
               </div>
 
               <div>
@@ -68,20 +115,33 @@ export default function Login() {
                 </label>
                 <input
                   type="password"
+                  name="password"
                   placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;"
-                  className="mt-1 block w-full rounded-md border border-purple-700 shadow-sm focus:border-primary focus:ring-primary px-4 py-2"
+                  className={`mt-1 block w-full rounded-md border px-4 py-2 text-black shadow-sm focus:ring-primary focus:border-primary ${
+                    errors.password ? "border-red-500" : "border-purple-700"
+                  }`}
+                  aria-invalid={!!errors.password}
+                  aria-describedby={errors.password ? "name-error" : undefined}
                 />
+                {errors.password && (
+                  <p id="name-error" className="text-red-500 text-sm mt-1">
+                    {errors.password}
+                  </p>
+                )}
               </div>
 
-              <div className="text-right text-sm text-purple-700 hover:underline cursor-pointer">
+              {/* <div className="text-right text-sm text-purple-700 hover:underline cursor-pointer">
                 Esqueci a senha
-              </div>
+              </div> */}
 
-              <Botao1 texto="Entrar" />
+              <Botao1 texto={loading ? "Entrando..." : "Entrar"} />
 
-              <div className="text-center text-sm text-primary hover:underline cursor-pointer">
+              <a
+                href="/auth/register"
+                className="text-center text-sm text-primary hover:underline cursor-pointer"
+              >
                 Registrar
-              </div>
+              </a>
             </form>
           </div>
         </div>

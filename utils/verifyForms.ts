@@ -1,3 +1,16 @@
+export interface FormDataPayload {
+  full_name: string;
+  cpf: string;
+  email: string;
+  password1: string;
+  password2: string;
+}
+
+export interface FormDataPayloadLogin {
+  email: string;
+  password: string;
+}
+
 export function isValidCPF(cpf: string) {
   cpf = cpf.replace(/[^\d]+/g, ""); // só números
   if (cpf.length !== 11) return false;
@@ -23,14 +36,6 @@ export function isValidCPF(cpf: string) {
 
   return true;
 }
-
-export interface FormDataPayload {
-  full_name: string;
-  cpf: string;
-  email: string;
-  password1: string;
-  password2: string;
-};
 
 type FormErrors = Partial<Record<keyof FormDataPayload, string>>;
 
@@ -61,6 +66,26 @@ export function validateFormData(data: FormDataPayload): FormErrors {
 
   if (data.password2 !== data.password1) {
     errors.password2 = "As senhas não coincidem.";
+  }
+
+  return errors;
+}
+
+type FormErrorsLogin = Partial<Record<keyof FormDataPayloadLogin, string>>;
+
+export function validationFormDataLogin(
+  data: FormDataPayloadLogin
+): FormErrorsLogin {
+  const errors: FormErrors = {};
+
+  if (!data.email) {
+    errors.email = "E-mail é obrigatório.";
+  } else if (!/\S+@\S+\.\S+/.test(data.email)) {
+    errors.email = "E-mail inválido.";
+  }
+
+  if (!data.password) {
+    errors.password1 = "Senha é obrigatória.";
   }
 
   return errors;
