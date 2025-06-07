@@ -1,7 +1,10 @@
 "use client";
+
 import Head from 'next/head';
+import CommentRequestForm from '../components/criacao-comentario';
 
 export default function EmConstrucao() {
+
 
   return (
     <>
