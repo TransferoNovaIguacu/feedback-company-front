@@ -17,7 +17,7 @@ export default function Register() {
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     setLoading(true);
     e.preventDefault();
     setErrors({});
@@ -42,7 +42,7 @@ export default function Register() {
     }
 
     try {
-      api.post("auth/register/common/", data);
+      const response = await api.post("auth/register/common/", data);
       router.push("/auth/login");
     } catch (error) {
       setLoading(false);

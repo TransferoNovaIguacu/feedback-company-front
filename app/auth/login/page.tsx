@@ -45,12 +45,16 @@ export default function Login() {
       const response = await api.post("auth/login/", data);
       localStorage.setItem("TOKEN", response.data.access);
       localStorage.setItem("USER", JSON.stringify(response.data.user));
-      router.push("/common");
+      if (response.data.user.user_type == "COMMON"){
+        router.push("/common");
+      }else if (response.data.user.user_type == "COMPANY"){
+        router.push("/company");
+      }
+
     } catch (error) {
       console.error(error);
     } finally {
       setLoading(false);
-      router.push("/auth/login")
     }
   };
   return (

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Sidebar from "../components/sidebar";
+import AuthGuard from "@/utils/privateRoute";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,10 +21,13 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+
   return (
     <>
+    <AuthGuard>
       <Sidebar companyInfo={companyInfo} />
       {children}
+    </AuthGuard>
     </>
   );
 }

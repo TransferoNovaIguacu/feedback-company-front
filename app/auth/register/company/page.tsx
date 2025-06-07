@@ -51,6 +51,7 @@ export default function RegistroEmpresa() {
     try {
       const response = await api.post("auth/register/company/", data);
       console.log(response);
+      router.push('/auth/login')
     } catch (error) {
       console.error(error);
     } finally {
@@ -236,7 +237,7 @@ export default function RegistroEmpresa() {
 
               <div
                 className="text-center text-sm text-primary hover:underline cursor-pointer"
-                onClick={() => router.push("/login")}
+                onClick={() => router.push("/auth/login")}
               >
                 Já tem uma conta? Faça login
               </div>
