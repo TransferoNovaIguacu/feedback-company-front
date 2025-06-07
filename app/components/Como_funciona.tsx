@@ -60,7 +60,7 @@ export default function ComoFunciona() {
               </ul>
             </div>
             <a
-              href="/en-construcao"
+              href="/auth/register/company"
               className="w-full flex justify-center items-center"
             >
               <Botao2 texto="Saiba mais" />
@@ -114,7 +114,7 @@ export default function ComoFunciona() {
               </ul>
             </div>
             <a
-              href="/en-construcao"
+              href="/auth/login"
               className="w-full flex justify-center items-center"
             >
               <Botao1 texto="Começar agora"></Botao1>
@@ -162,7 +162,7 @@ export default function ComoFunciona() {
               </ul>
             </div>
             <a
-              href="/en-construcao"
+              href="/auth/register/company"
               className="w-full flex justify-center items-center"
             >
               <Botao2 texto="Explorar tokens" />

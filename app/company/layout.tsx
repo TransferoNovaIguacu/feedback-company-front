@@ -1,15 +1,19 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
+import Sidebar from "../components/sidebar";
+import AuthGuard from "@/utils/privateRoute";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "FeedToken",
+  title: "Feedtoke",
   description: "Avalie seus sites favoritos e ganhe tokens",
-   icons: {
-    icon: '/svg/favicon.svg',
-  },
+};
+
+const companyInfo = {
+  name: "Transfero academy",
+  type: "Bank account",
+  initials: "TA",
 };
 
 export default function RootLayout({
@@ -17,9 +21,13 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
-    </html>
+    <>
+    <AuthGuard>
+      <Sidebar companyInfo={companyInfo} />
+      {children}
+    </AuthGuard>
+    </>
   );
 }
