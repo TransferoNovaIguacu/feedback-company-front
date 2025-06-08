@@ -1,58 +1,76 @@
+"use client";
 import { Botao1, Botao2 } from "@/app/components/Botao";
 import CardGenerico from "@/app/components/card";
 import pontoazul from "@/public/svg/pontoazul.svg";
 import pontoroxo from "@/public/svg/pontoroxo.svg";
 import pontoaroxoazul from "@/public/svg/pontoroxoazul.svg";
+import api from "@/utils/axios";
+import { useState } from "react";
+
+interface PlansType {
+  id: number;
+  name: string;
+  description: string;
+  token_value: string;
+  feedbacks_available: number;
+  quests_available: number;
+  is_active: boolean;
+}
 
 export default function PlansPage() {
+  const [plans, setPlans] = useState<PlansType[]>([]);
+
+  const fatchPlans = async () => {
+    try {
+      const token = localStorage.getItem("TOKEN");
+
+      const response = await api.get("/plans/plans/", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const sortedPlans = response.data.sort(
+        (a: PlansType, b: PlansType) => a.id - b.id
+      );
+      setPlans(sortedPlans); // response.data precisa ser um array
+    } catch (error) {
+      console.error("Erro ao buscar os planos:", error);
+    }
+  };
+
+  fatchPlans();
   return (
     <div className="flex flex-col bg-zinc-200 h-screen justify-center items-center">
       <h1 className="mb-20 font-extrabold text-3xl  text-violet-700 uppercase">
         Conheça nossos Planos
       </h1>
-      <div className="flex flex-col lg:flex-row h-fit gap-5">
-        <CardGenerico
-          ClassName="bg-violet-600 mt-5 drop-shadow-lg transition-all duration-300 hover:scale-105 hover:drop-shadow-2xl"
-          imagem={pontoazul}
-          titulo="Plano Start"
-          descricao="Ideal para empresas que estão começando a testar o poder do feedback com recompensa. Inclui:"
-          lista={[
-            "25 tokens para distribuir entre participantes",
-            "Até 5 questionários ou campanhas de comentários por mês",
-            "Painel básico de respostas",
-            "Suporte via e-mail",
-            "Relatórios mensais simplificados",
-          ]}
-          botao={<Botao2 className="bg-opacity-40 hover:bg-opacity-40" texto="Adquirir plano" />}
-        />
-        <CardGenerico
-          ClassName="bg-violet-900 drop-shadow-lg hover:drop-shadow-2xl hover:scale-105 transition-all duration-300"
-          imagem={pontoroxo}
-          titulo="Plano Pro"
-          descricao="Ideal para empresas que estão começando a testar o poder do feedback com recompensa. Inclui:"
-          lista={[
-            "25 tokens para distribuir entre participantes",
-            "Até 5 questionários ou campanhas de comentários por mês",
-            "Painel básico de respostas",
-            "Suporte via e-mail",
-            "Relatórios mensais simplificados",
-          ]}
-          botao={<Botao1 texto="Adquirir plano" />}
-        />
-        <CardGenerico
-          ClassName="bg-violet-600 mt-5 drop-shadow-lg transition-all duration-300 hover:scale-105 hover:drop-shadow-2xl"
-          imagem={pontoaroxoazul}
-          titulo="Plano Start"
-          descricao="Ideal para empresas que estão começando a testar o poder do feedback com recompensa. Inclui:"
-          lista={[
-            "25 tokens para distribuir entre participantes",
-            "Até 5 questionários ou campanhas de comentários por mês",
-            "Painel básico de respostas",
-            "Suporte via e-mail",
-            "Relatórios mensais simplificados",
-          ]}
-          botao={<Botao2 className="bg-opacity-40 hover:bg-opacity-40" texto="Adquirir plano" />}
-        />
+      <div className="flex flex-col-reverse lg:flex-row h-fit gap-5">
+        {plans.map((plano, index) => (
+          <CardGenerico
+            key={index}
+            ClassName="bg-violet-600 mt-5 drop-shadow-lg transition-all duration-300 hover:scale-105 hover:drop-shadow-2xl"
+            imagem={
+              index === 0 ? pontoazul : index === 1 ? pontoroxo : pontoaroxoazul
+            }
+            titulo={plano.name}
+            descricao={plano.description}
+            lista={[
+              `${plano.token_value} tokens para distribuir`,
+              `${plano.quests_available} questionários por mês`,
+              `${
+                plano.feedbacks_available > 500
+                  ? "Ilimitados"
+                  : plano.feedbacks_available
+              } feedbacks por mês`,
+            ]}
+            botao={
+              <Botao2
+                className="bg-opacity-40 hover:bg-opacity-40"
+                texto="Adquirir plano"
+              />
+            }
+          />
+        ))}
       </div>
     </div>
   );
