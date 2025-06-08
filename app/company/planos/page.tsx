@@ -40,15 +40,21 @@ export default function PlansPage() {
 
   fatchPlans();
   return (
-    <div className="flex flex-col bg-zinc-200 h-screen justify-center items-center">
-      <h1 className="mb-20 font-extrabold text-3xl  text-violet-700 uppercase">
-        Conheça nossos Planos
-      </h1>
+    <div className="flex flex-col bg-zinc-50 h-screen items-center">
+      <div className="flex flex-col items-center mb-10 gap-4">
+        <h1 className="text-5xl font-bold text-white uppercase bg-gradient-to-br from-purple-500 to-indigo-600 px-9 pb-5 pt-14 rounded-b-3xl">
+          Conheça nossos Planos
+        </h1>
+        <p className="text-xl text-purple-600 max-w-xl text-center">
+          Escolha o plano ideal para suas necessidades e comece a transformar
+          seus feedbacks em resultados.
+        </p>
+      </div>
       <div className="flex flex-col-reverse lg:flex-row h-fit gap-5">
         {plans.map((plano, index) => (
           <CardGenerico
             key={index}
-            ClassName="bg-violet-600 mt-5 drop-shadow-lg transition-all duration-300 hover:scale-105 hover:drop-shadow-2xl"
+            ClassName="max-w-[20vw] bg-gradient-to-br from-purple-500 to-indigo-600 mt-5 drop-shadow-lg transition-all duration-300 hover:scale-105 hover:drop-shadow-2xl"
             imagem={
               index === 0 ? pontoazul : index === 1 ? pontoroxo : pontoaroxoazul
             }
@@ -65,13 +71,14 @@ export default function PlansPage() {
             ]}
             botao={
               <Botao2
-                className="bg-opacity-40 hover:bg-opacity-40"
+                className="bg-white hover:bg-white hover:bg-opacity-90 text-violet-600"
                 texto="Adquirir plano"
               />
             }
           />
         ))}
       </div>
+        <span className="text-purple-400 text-sm mt-14">© 2025 Feedtoken, Transfero Academy Todos os direitos reservados.</span>
     </div>
   );
 }

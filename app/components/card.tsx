@@ -40,8 +40,8 @@ export default function CardGenerico({
           </div>
           <h3 className="text-lg mt-6 font-extrabold">{titulo}</h3>
         </div>
-        <p className="text-gray-300 mb-4 text-opacity-75 max-[500px]:text-center">{descricao}</p>
-        <ul className="space-y-1 text-sm mb-6 text-gray-300">
+        <p className="text-white mb-4 max-[500px]:text-center">{descricao}</p>
+        <ul className="space-y-1 text-sm mb-6 text-white">
           {lista.map((item, index) => (
             <li
               key={index}
