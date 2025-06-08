@@ -196,7 +196,7 @@ export default function Register() {
               <Botao1 texto="Registrar" />
 
               <div className="text-center text-sm text-primary ">
-                Já tem uma conta? <a className="hover:underline cursor-pointer" href="/auth/login">Entrar</a>
+                Já tem uma conta? <a className="hover:underline cursor-pointer font-semibold" href="/auth/login">Entrar</a>
               </div>
               <div className="!mt-2 text-center text-sm text-primary hover:underline cursor-pointer">
                 <a href="/auth/register/company">
