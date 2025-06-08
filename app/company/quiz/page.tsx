@@ -1,9 +1,8 @@
-
-import CriacaoComentario from "@/app/components/criacao-comentario";
+import TelaFormulario from "@/app/components/TelaFormulario";
 
 export default function QuizPage(){
 
 return(
-    <CriacaoComentario/>
+    <TelaFormulario/>
 );
 };
