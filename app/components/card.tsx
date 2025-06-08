@@ -8,6 +8,7 @@ interface CardProps {
   lista?: string[];
   corIcone?: string;
   botao?: ReactNode;
+  ClassName?: string;
 }
 
 export default function CardGenerico({
@@ -17,9 +18,10 @@ export default function CardGenerico({
   lista = [],
   corIcone = '#263755',
   botao,
+  ClassName, 
 }: CardProps) {
   return (
-    <div className="bg-[#1b1e33] rounded-2xl p-6 shadow-lg flex flex-col max-w-sm mx-auto">
+    <div className={`bg-[#1b1e33] rounded-2xl p-6 shadow-lg flex flex-col max-w-sm mx-auto ${ClassName}`}>
       {/* max-w-sm define a largura máxima (ex: 24rem) e mx-auto centraliza */}
       <div className="flex-grow">
         <div className="mb-4 max-[500px]:text-center">
