@@ -1,5 +1,5 @@
 // components/CardAvaliacao.tsx
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Botao2 } from './Botao'; // Assumindo que Botao2 está em './Botao'
 
 // Definição da interface para as props do CardAvaliacao
@@ -16,13 +16,15 @@ export interface CardAvaliacaoType {
 }
 
 interface CardAvaliacaoProps {
-    CardAvaliacaoInfo: CardAvaliacaoType
+    CardAvaliacaoInfo: CardAvaliacaoType,
+    className?: string 
+    botao?: ReactNode
 }
 
-export  function CardAvaliacao({CardAvaliacaoInfo}: CardAvaliacaoProps) {
+export  function CardAvaliacao({CardAvaliacaoInfo, className, botao}: CardAvaliacaoProps) {
     const {company, description, href, reward,rewardBg, rewardText, time, title} = CardAvaliacaoInfo
   return (
-    <div className="bg-gray-950 rounded-lg p-6 shadow-lg flex flex-col bg-opacity-45">
+    <div className={`bg-gray-950 rounded-lg p-6 shadow-lg flex flex-col bg-opacity-45 ${className}`}>
       <div className="flex justify-between items-start mb-4">
         <h3 className="text-xl font-semibold text-white">
           {title}
@@ -58,7 +60,7 @@ export  function CardAvaliacao({CardAvaliacaoInfo}: CardAvaliacaoProps) {
         {time}
       </div>
       <a href={href}>
-        <Botao2 texto="Participar" />
+        {!botao? <Botao2 texto="Participar" /> : botao}
       </a>
     </div>
   );

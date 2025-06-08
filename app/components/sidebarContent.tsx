@@ -9,19 +9,18 @@ type SidebarContentProps = {
 
 export const menuItems = [
   {
-    key: "dashboard",
-    label: "Dashboard",
-    href: "/dashboard",
+    key: "Minhas Pesquisas",
+    label: "Minhas Pesquisas",
+    href: "/company",
     icon: <Home size={18} />,
   },
   {
-    key: "business",
-    label: "Negócios",
-    href: "/business",
+    key: "planos",
+    label: "Planos",
+    href: "company/planos",
     icon: <Building size={18} />,
   },
-  { key: "user", label: "Usuários", href: "/users", icon: <User size={18} /> },
-  { key: "admin", label: "Admin", href: "/admin", icon: <Shield size={18} /> },
+  { key: "user", label: "Usuario", href: "/users", icon: <User size={18} /> },
 ] as const;
 
 type MenuItem = (typeof menuItems)[number];
