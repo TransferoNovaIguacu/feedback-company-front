@@ -10,7 +10,7 @@ export default function PlansPage() {
       <h1 className="mb-20 font-extrabold text-3xl  text-violet-700 uppercase">
         Conheça nossos Planos
       </h1>
-      <div className="flex h-fit gap-5">
+      <div className="flex flex-col lg:flex-row h-fit gap-5">
         <CardGenerico
           ClassName="bg-violet-600 mt-5 drop-shadow-lg transition-all duration-300 hover:scale-105 hover:drop-shadow-2xl"
           imagem={pontoazul}
