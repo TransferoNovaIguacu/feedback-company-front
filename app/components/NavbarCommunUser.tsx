@@ -6,6 +6,7 @@ import { Botao1, Botao2 } from "./Botao";
 import TokenBalance from "./TokenBalance";
 import api from "@/utils/axios";
 import { useRouter } from "next/navigation";
+import { getTokenBalance } from "@/utils/defineUtilit";
 
 function classNames(...classes: (string | undefined | false | null)[]): string {
   return classes.filter(Boolean).join(" ");
@@ -16,27 +17,9 @@ export function NavbarCommunUser(): JSX.Element {
   const [balance, setBalance] = useState("0")
   const router = useRouter()
 
-  const getTokenBalance = async () => {
-    try {
-      const token = localStorage.getItem("TOKEN")
-
-      if (!token) throw new Error
-
-      const response = await api.get("web3/api/v1/wallet/balance/", {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-
-      setBalance(response.data.balance.toFixed(2))
-      
-    } catch (error) {
-      console.log(error)
-    }
-  }
 
   useEffect(() => {
-    getTokenBalance()
+    getTokenBalance(setBalance)
   },[])
 
   return (

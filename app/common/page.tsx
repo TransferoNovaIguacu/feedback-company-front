@@ -16,7 +16,6 @@ export default function CommonPage() {
   }, []);
 
   return (
-    <AuthGuard>
       <div className="grid grid-cols-4 gap-4 mt-10 mx-5">
         {missions.map((mission) => {
           return (
@@ -28,6 +27,5 @@ export default function CommonPage() {
           );
         })}
       </div>
-    </AuthGuard>
   );
 }

@@ -1,3 +1,4 @@
+import AuthGuard from "@/utils/privateRoute";
 import { NavbarCommunUser } from "../components/NavbarCommunUser";
 
 export default function RootLayout({
@@ -6,9 +7,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
+    <AuthGuard>
     <div className="bg-[#0E1321] min-h-screen -w-screen">
         <NavbarCommunUser/>
         {children}
     </div>
+    </AuthGuard>
   );
 }
