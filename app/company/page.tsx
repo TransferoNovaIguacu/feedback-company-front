@@ -147,7 +147,7 @@ export const fetchMissions = async (setMockData: React.Dispatch<SetStateAction<M
   }
 };
 
-export default function CompanyPage() {
+export default function CompanyPage(){
   const [paginaAtual, setPaginaAtual] = useState(1);
   const [busca, setBusca] = useState("");
   const [creatMission, setCreatMission] = useState<boolean>(false);
