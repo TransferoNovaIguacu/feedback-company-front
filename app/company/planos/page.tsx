@@ -5,7 +5,7 @@ import pontoazul from "@/public/svg/pontoazul.svg";
 import pontoroxo from "@/public/svg/pontoroxo.svg";
 import pontoaroxoazul from "@/public/svg/pontoroxoazul.svg";
 import api from "@/utils/axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface PlansType {
   id: number;
@@ -38,7 +38,26 @@ export default function PlansPage() {
     }
   };
 
-  fatchPlans();
+  const contractPlan = async (planId: number) => {
+    try {
+      const token = localStorage.getItem("TOKEN");
+
+      if(!token) throw new Error
+      const response = await api.post(`plans/plans/${planId}/purchase/`,{}, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log(response.data);
+    } catch (error) {
+      console.error(error)
+    }
+  };
+
+  useEffect(() => {
+    fatchPlans();
+  }, []);
+
   return (
     <div className="flex flex-col bg-zinc-50 h-screen items-center">
       <div className="flex flex-col items-center mb-10 gap-4">
@@ -70,15 +89,19 @@ export default function PlansPage() {
               } feedbacks por mês`,
             ]}
             botao={
-              <Botao2
-                className="bg-white hover:bg-white hover:bg-opacity-90 text-violet-600"
-                texto="Adquirir plano"
-              />
+              <div onClick={() => contractPlan(plano.id)}>
+                <Botao2
+                  className="bg-white hover:bg-white hover:bg-opacity-90 !text-violet-600"
+                  texto="Adquirir plano"
+                />
+              </div>
             }
           />
         ))}
       </div>
-        <span className="text-purple-400 text-sm mt-14">© 2025 Feedtoken, Transfero Academy Todos os direitos reservados.</span>
+      <span className="text-purple-400 text-sm mt-14">
+        © 2025 Feedtoken, Transfero Academy Todos os direitos reservados.
+      </span>
     </div>
   );
 }

@@ -153,7 +153,7 @@ export default function CompanyPage() {
             dadosVisiveis.map((data) => (
               <CardAvaliacao
                 botao={<Botao1 texto="Ver Detalhes" />}
-                className="bg-violet-900 bg-opacity-100 h-full"
+                className="bg-violet-200 bg-opacity-100 h-full"
                 key={data.id}
                 CardAvaliacaoInfo={data}
               />
