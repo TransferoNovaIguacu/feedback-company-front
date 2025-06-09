@@ -2,10 +2,11 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { CardAvaliacao, CardAvaliacaoType  } from "@/app/components/CardAvaliacao"; // Ajuste o caminho conforme sua estrutura
+import { CardAvaliacao } from "@/app/components/CardAvaliacao"; // Ajuste o caminho conforme sua estrutura
+import { Mission } from "../company/page";
 
 export default function AvailableEvaluations() {
-  const [evaluations, setEvaluations] = useState<CardAvaliacaoType[]>([]);
+  const [evaluations, setEvaluations] = useState<Mission[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
@@ -17,45 +18,48 @@ export default function AvailableEvaluations() {
         setError(null);
 
         // Simulação de chamada de API com dados estáticos
-        const mockData: CardAvaliacaoType[] = [
+        const mockData: Mission[] = [
           {
             id: 1,
+            mission_type: "RESPONDA",
             title: "App de Delivery",
-            company: "FoodExpress Inc.",
             description:
               "Avalie nossa nova interface de usuário e o processo de pedido do aplicativo de delivery.",
-            time: "15-20 min",
-            reward: "+60 FTK",
-            rewardBg: "bg-[#282B33]",
-            rewardText: "text-white",
-            href: "/auth/login",
-             mission_type: "COMENTE"
+            url: "/auth/login",
+            status: "ativa",
+            created_at: "2025-06-09T10:00:00Z",
+            updated_at: "2025-06-09T10:00:00Z",
+            company: 1,
+            contracted_plan: 2,
+            assigned_to: 5,
           },
           {
             id: 2,
+            mission_type: "COMENTE",
             title: "Fones de Ouvido Pro",
-            company: "TechCorp",
             description:
               "Teste e avalie nossos novos fones de ouvido com cancelamento de ruído ativo.",
-            time: "30-40 min",
-            reward: "+120 FTK",
-            rewardBg: "bg-[#5A388D]",
-            rewardText: "text-white",
-            href: "/auth/login",
-            mission_type: "COMENTE"
+            url: "/auth/login",
+            status: "ativa",
+            created_at: "2025-06-09T12:00:00Z",
+            updated_at: "2025-06-09T12:00:00Z",
+            company: 1,
+            contracted_plan: 1,
+            assigned_to: 10,
           },
           {
             id: 3,
+            mission_type: "SUGIRA",
             title: "Serviço de Streaming",
-            company: "MediaStream",
             description:
               "Avalie a experiência de usuário e as recomendações do nosso novo serviço de streaming.",
-            time: "20-25 min",
-            reward: "+85 FTK",
-            rewardBg: "bg-[#285A38]",
-            rewardText: "text-white",
-            href: "/auth/login",
-             mission_type: "COMENTE"
+            url: "/auth/login",
+            status: "ativa",
+            created_at: "2025-06-08T09:30:00Z",
+            updated_at: "2025-06-09T09:00:00Z",
+            company: 2,
+            contracted_plan: 3,
+            assigned_to: 8,
           },
         ];
         setEvaluations(mockData);
@@ -72,8 +76,6 @@ export default function AvailableEvaluations() {
 
     fetchEvaluations();
   }, []);
-
-
 
   return (
     <div className="bg-[#0e1125] w-full h-fit">
@@ -126,7 +128,10 @@ export default function AvailableEvaluations() {
               {!loading &&
                 !error &&
                 evaluations.map((evaluation) => (
-                  <CardAvaliacao CardAvaliacaoInfo={evaluation} key={evaluation.id}  /> 
+                  <CardAvaliacao
+                    CardAvaliacaoInfo={evaluation}
+                    key={evaluation.id}
+                  />
                 ))}
             </div>
           </div>
