@@ -159,6 +159,7 @@ export default function ProfilePage() {
                   key={mission.id}
                   CardAvaliacaoInfo={mission}
                   botao={<Botao1 texto="Participar" />}
+                  className="max-w-[27vw]"
                 />
               ))
             ) : (
