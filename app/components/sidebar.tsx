@@ -20,7 +20,7 @@ export default function Sidebar({ companyInfo }: SidebarProps) {
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  const selectedKey = menuItems.find((item) => pathname.startsWith(item.href))?.key ?? "Meinhas Pesquisas";
+  const selectedKey = menuItems.find((item) => pathname.startsWith(item.href))?.key ?? "Minhas Pesquisas";
 
   // Função para verificar se estamos em tela desktop >= md (768px)
   const isDesktop = () => window.matchMedia("(min-width: 768px)").matches;
