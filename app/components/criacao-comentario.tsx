@@ -1,20 +1,28 @@
 "use client";
+
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 import { Botao1 } from "./Botao";
+import api from "@/utils/axios";
+
+type FormDataComentario = {
+  title: string;
+  url: string;
+  description: string;
+};
+
+type FormErrors = Partial<Record<keyof FormDataComentario, string>>;
 
 export default function CriacaoComentario() {
-  const [formData, setFormData] = useState({
-    companyName: "",
-    pageLink: "",
+  const [formData, setFormData] = useState<FormDataComentario>({
+    title: "",
+    url: "",
     description: "",
-    rewardTokens: 0,
   });
 
-  const [requests, setRequests] = useState<any[]>([]);
+  const [errors, setErrors] = useState<FormErrors>({});
   const [showSuccess, setShowSuccess] = useState(false);
-  const [showError, setShowError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const router = useRouter();
 
@@ -23,186 +31,155 @@ export default function CriacaoComentario() {
   ) {
     setFormData({
       ...formData,
-      [e.target.name]:
-        e.target.name === "rewardTokens"
-          ? parseInt(e.target.value)
-          : e.target.value,
+      [e.target.name]: e.target.value,
     });
   }
 
-  function isFormValid() {
-    var companyName = formData.companyName,
-      pageLink = formData.pageLink,
-      description = formData.description,
-      rewardTokens = formData.rewardTokens;
-
-    return (
-      companyName.trim() !== "" &&
-      pageLink.trim() !== "" &&
-      description.trim() !== "" &&
-      rewardTokens > 0
-    );
+  function validate(data: FormDataComentario): FormErrors {
+    const newErrors: FormErrors = {};
+    if (!data.title.trim()) newErrors.title = "Título é obrigatório.";
+    if (!data.url.trim()) newErrors.url = "Link é obrigatório.";
+    if (!data.description.trim())
+      newErrors.description = "Descrição é obrigatória.";
+    return newErrors;
   }
 
-  function handleSubmit() {
-    if (!isFormValid()) {
-      setShowError(true);
-      setTimeout(function () {
-        setShowError(false);
-      }, 3000);
+  const submitForm = async (data: FormDataComentario) => {
+    const token = localStorage.getItem("TOKEN");
+    
+    if (!token) throw new Error("Token não encontrado.");
+    const plan =  await api.get("plans/contracted-plans/", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+    const response = await api.post(
+      "missions/missions/",
+      {
+        mission_type: "FEEDBACK",
+        title: data.title,
+        description: data.description,
+        url: data.url,
+        contracted_plan: parseInt(plan.data[0].id),
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    console.log(response.data);
+    return response;
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setShowSuccess(false);
+    setErrors({});
+    setLoading(true);
+
+    const validationErrors = validate(formData);
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      setLoading(false);
       return;
     }
 
-    setRequests([...requests, formData]);
-    setFormData({
-      companyName: "",
-      pageLink: "",
-      description: "",
-      rewardTokens: 0,
-    });
-    setShowSuccess(true);
-    setTimeout(function () {
-      setShowSuccess(false);
-      router.push("/"); // Ajuste a rota aqui
-    }, 2000);
-  }
+    try {
+      await submitForm(formData);
+      setShowSuccess(true);
+      setFormData({ title: "", url: "", description: "" });
+    } catch (error) {
+      console.error("Erro ao enviar solicitação:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100 p-8">
-      <div className="bg-white rounded-xl shadow-md max-w-4xl w-full mx-6 p-8 space-y-8">
-        <h2 className="text-3xl mb-5 text-black font-bold">
-          Solicitar Comentários
-        </h2>
+    <form
+      onSubmit={handleSubmit}
+      className="bg-white rounded-xl shadow-md max-w-4xl w-full mx-6 p-8 space-y-8"
+    >
+      <h2 className="text-3xl mb-5 text-black font-bold">
+        Solicitar Comentários
+      </h2>
 
-        {/* <div className="ml-7 flex items-center gap-2 text-gray-900 text-xl font-bold">
-          <Image src="/svg/predio.svg" alt="Ícone Empresa" width={24} height={24} />
-          <span>Para Empresas</span>
-        </div> */}
-        <div className="border-b border-gray-300 opacity-50 mb-6" />
+      <div className="border-b border-gray-300 opacity-50 mb-6" />
 
-        <div className="border-l-4 border-blue-500 bg-blue-50 text-blue-700 p-5 text-base rounded">
-          <p>
-            Preencha o formulário abaixo para solicitar comentários dos usuários sobre o seu site ou plataforma.
-          </p>
-        </div>
-
-        <div>
-          <label className="block text-gray-600 text-sm font-medium mb-1">
-            Nome da Empresa
-          </label>
-          <input
-            type="text"
-            name="companyName"
-            value={formData.companyName}
-            onChange={handleChange}
-            placeholder="Ex: Transfero"
-            className="w-full text-black border border-gray-300 rounded-md p-3"
-          />
-        </div>
-
-        <div>
-          <label className="block text-gray-600 text-sm font-medium mb-1">
-            Link da Página
-          </label>
-          <input
-            type="text"
-            name="pageLink"
-            value={formData.pageLink}
-            onChange={handleChange}
-            placeholder="https://www.suaempresa.com/pagina"
-            className="w-full text-black border border-gray-300 rounded-md p-3"
-          />
-        </div>
-
-        <div>
-          <label className="block text-gray-600 text-sm font-medium mb-1">
-            Descrição da Solicitação
-          </label>
-          <textarea
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-            placeholder="Descreva o que você espera dos comentários..."
-            className="w-full border text-black border-gray-300 rounded-md p-3 h-32 resize-none"
-          />
-        </div>
-
-        {/* <div className="max-w-[120px]">
-          <label className="text-black text-sm font-medium mb-1 flex items-center gap-1">
-            Recompensa em Tokens
-          </label>
-          <div className="relative">
-            <Image
-              src="/svg/token-icon.svg"
-              alt="Ícone de Token"
-              width={16}
-              height={16}
-              className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none"
-            />
-            <input
-              type="number"
-              name="rewardTokens"
-              value={formData.rewardTokens}
-              onChange={handleChange}
-              className="w-full border text-black border-gray-300 rounded-md p-3 pl-9"
-            />
-          </div>
-        </div> */}
-
-        {/* Container do botão e pop-up */}
-        <div className="relative flex items-center justify-end gap-4 w-full">
-          {(showSuccess || showError) && (
-            <div
-              className={`absolute flex items-start gap-2 px-4 py-3 rounded-md shadow-md text-sm w-max
-              ${
-                showSuccess
-                  ? "bg-green-50 border border-green-300 text-green-800"
-                  : "bg-red-50 border border-red-300 text-red-800"
-              }`}
-              style={{
-                top: "100%",
-                left: "50%",
-                transform: "translateX(-50%)",
-                marginTop: "8px",
-                maxWidth: "90vw",
-                width: "max-content",
-                overflowWrap: "break-word",
-                zIndex: 10,
-              }}
-            >
-              <svg
-                className="w-5 h-5 mt-0.5 flex-shrink-0"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                {showSuccess ? (
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M5 13l4 4L19 7"
-                  />
-                ) : (
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                )}
-              </svg>
-              <span>
-                {showSuccess
-                  ? "Pesquisa publicada com sucesso!"
-                  : "Por favor, preencha todos os campos corretamente."}
-              </span>
-            </div>
-          )}
-
-          <Botao1 texto="Publicar Pesquisa"/>
-        </div>
+      <div className="border-l-4 border-blue-500 bg-blue-50 text-blue-700 p-5 text-base rounded">
+        <p>
+          Preencha o formulário abaixo para solicitar comentários dos usuários
+          sobre o seu site ou plataforma.
+        </p>
       </div>
-    </div>
+
+      <div>
+        <label className="block text-gray-600 text-sm font-medium mb-1">
+          Título
+        </label>
+        <input
+          type="text"
+          name="title"
+          value={formData.title}
+          onChange={handleChange}
+          placeholder="Ex. Avalie performance"
+          className={`w-full text-black border ${
+            errors.title ? "border-red-500" : "border-gray-300"
+          } rounded-md p-3`}
+        />
+        {errors.title && (
+          <p className="text-red-500 text-sm mt-1">{errors.title}</p>
+        )}
+      </div>
+
+      <div>
+        <label className="block text-gray-600 text-sm font-medium mb-1">
+          Link da Página
+        </label>
+        <input
+          type="text"
+          name="url"
+          value={formData.url}
+          onChange={handleChange}
+          placeholder="https://www.suaempresa.com/pagina"
+          className={`w-full text-black border ${
+            errors.url ? "border-red-500" : "border-gray-300"
+          } rounded-md p-3`}
+        />
+        {errors.url && (
+          <p className="text-red-500 text-sm mt-1">{errors.url}</p>
+        )}
+      </div>
+
+      <div>
+        <label className="block text-gray-600 text-sm font-medium mb-1">
+          Descrição da Solicitação
+        </label>
+        <textarea
+          name="description"
+          value={formData.description}
+          onChange={handleChange}
+          placeholder="Descreva o que você espera dos comentários..."
+          className={`w-full text-black border ${
+            errors.description ? "border-red-500" : "border-gray-300"
+          } rounded-md p-3 h-32 resize-none`}
+        />
+        {errors.description && (
+          <p className="text-red-500 text-sm mt-1">{errors.description}</p>
+        )}
+      </div>
+
+      <div className="relative flex items-center justify-end gap-4 w-full">
+        <Botao1 texto={loading ? "Publicando..." : "Publicar Pesquisa"} />
+      </div>
+
+      {showSuccess && (
+        <p className="text-green-600 text-sm text-right">
+          Solicitação enviada com sucesso!
+        </p>
+      )}
+    </form>
   );
 }

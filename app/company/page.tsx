@@ -2,6 +2,8 @@
 import { useState, useEffect } from "react";
 import { Botao1 } from "../components/Botao";
 import { CardAvaliacao, CardAvaliacaoType } from "../components/CardAvaliacao";
+import TelaFormulario from "../components/TelaFormulario";
+import CriacaoComentario from "../components/criacao-comentario";
 
 const mockData: CardAvaliacaoType[] = [
   {
@@ -117,7 +119,12 @@ const mockData: CardAvaliacaoType[] = [
 export default function CompanyPage() {
   const [paginaAtual, setPaginaAtual] = useState(1);
   const [busca, setBusca] = useState("");
+  const [creatMission, setCreatMission] = useState<boolean>(false);
   const itensPorPagina = 6;
+
+  const hundleOpen = () => {
+    setCreatMission(true);
+  };
 
   // Filtra os cards conforme o título
   const dadosFiltrados = mockData.filter((item) =>
@@ -137,18 +144,36 @@ export default function CompanyPage() {
   }, [busca]);
 
   return (
-    <div className="h-screen w-full flex flex-col justify-start items-center py-10">
+    <div className="h-screen w-full flex flex-col justify-start items-center py-5">
       {/* Campo de busca */}
-      <input
-        type="text"
-        placeholder="Buscar por título..."
-        value={busca}
-        onChange={(e) => setBusca(e.target.value)}
-        className="mb-6 px-4 py-2 text-zinc-700 border border-gray-300 rounded w-80 focus:outline-none focus:ring-2 focus:ring-violet-500"
-      />
+      <div className="px-10 flex gap-2 w-full ">
+        <input
+          type="text"
+          placeholder="Buscar por título..."
+          value={busca}
+          onChange={(e) => setBusca(e.target.value)}
+          className="mb-6 px-4 py-2 text-zinc-700 border border-gray-300 rounded !w-[69vw] focus:outline-none focus:ring-2 focus:ring-violet-500"
+        />
+        <div onClick={() => hundleOpen()}>
+          <Botao1 texto="Criar Pesquisa" className="h-fit max-w-[20vw]" />
+        </div>
+      </div>
 
-      <div className="h-full flex flex-col justify-between">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 px-10">
+      <div
+        className={`h-full flex ${
+          creatMission ? "" : "flex-col"
+        } justify-between`}
+      >
+        {creatMission && (
+          <div className="min-w-[60vw] !max-h-[70vh]">
+            <CriacaoComentario />
+          </div>
+        )}
+        <div
+          className={`grid grid-cols-1 ${
+            creatMission ? "" : "md:grid-cols-2 lg:grid-cols-3"
+          } gap-5 px-10 h-[88vh] overflow-scroll`}
+        >
           {dadosVisiveis.length > 0 ? (
             dadosVisiveis.map((data) => (
               <CardAvaliacao
@@ -165,7 +190,7 @@ export default function CompanyPage() {
           )}
         </div>
 
-        {totalPaginas > 1 && (
+        {!creatMission && totalPaginas > 1 && (
           <div className="mt-8 flex justify-center items-center gap-4">
             <button
               onClick={() => setPaginaAtual((prev) => Math.max(prev - 1, 1))}
