@@ -48,7 +48,7 @@ export  function CardAvaliacao({CardAvaliacaoInfo, className, botao}: CardAvalia
         </svg>
         10 - 20min
       </div>
-      <a href={url}>
+      <a target='_blank' href={url}>
         {!botao? <Botao2 texto="Participar" /> : botao}
       </a>
     </div>
