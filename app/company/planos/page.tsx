@@ -19,6 +19,7 @@ interface PlansType {
 
 export default function PlansPage() {
   const [plans, setPlans] = useState<PlansType[]>([]);
+  const currentPlan = localStorage.getItem("MYPLAN");
 
   const fatchPlans = async () => {
     try {
@@ -41,18 +42,73 @@ export default function PlansPage() {
   const contractPlan = async (planId: number) => {
     try {
       const token = localStorage.getItem("TOKEN");
+      const contractedPan = localStorage.getItem("MYPLAN");
 
-      if(!token) throw new Error
-      const response = await api.post(`plans/plans/${planId}/purchase/`,{}, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      console.log(response.data);
+      // if (contractedPan) {
+      //   const contractedResponse = await api.get("plans/contracted-plans/", {
+      //     headers: {
+      //       Authorization: `Bearer ${token}`,
+      //     },
+      //   });
+      //   await api.delete(
+      //     `plans/contracted-plans/${contractedResponse.data[0].id}`,
+      //     {
+      //       headers: {
+      //         Authorization: `Bearer ${token}`,
+      //       },
+      //     }
+      //   );
+      //   localStorage.removeItem("MYPLAN");
+      // }
+
+      if (!token) throw new Error();
+      await api.post(
+        `plans/plans/${planId}/purchase/`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      localStorage.setItem("MYPLAN", `${planId}`);
     } catch (error) {
-      console.error(error)
+      console.error(error);
+    } finally {
+      fatchPlans();
     }
   };
+
+  // const changePlan = async (plano: any) => {
+  //   try {
+  //     const token = localStorage.getItem("TOKEN");
+  //     if (!token) throw new Error();
+
+  //     if (currentPlan && parseInt(currentPlan) === plano.id) {
+  //       const contractedResponse = await api.get("plans/contracted-plans/", {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       });
+  //       await api.delete(
+  //         `plans/contracted-plans/${contractedResponse.data[0].id}`,
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${token}`,
+  //           },
+  //         }
+  //       );
+  //       localStorage.removeItem("MYPLAN");
+  //     } else {
+  //       contractPlan(plano.id);
+  //     }
+  //     return;
+  //   } catch (error) {
+  //     console.error(error);
+  //   } finally {
+  //     fatchPlans();
+  //   }
+  // };
 
   useEffect(() => {
     fatchPlans();
@@ -71,32 +127,46 @@ export default function PlansPage() {
       </div>
       <div className="flex flex-col-reverse lg:flex-row h-fit gap-5">
         {plans.map((plano, index) => (
-          <CardGenerico
-            key={index}
-            ClassName="max-w-[20vw] bg-gradient-to-br from-purple-500 to-indigo-600 mt-5 drop-shadow-lg transition-all duration-300 hover:scale-105 hover:drop-shadow-2xl"
-            imagem={
-              index === 0 ? pontoazul : index === 1 ? pontoroxo : pontoaroxoazul
-            }
-            titulo={plano.name}
-            descricao={plano.description}
-            lista={[
-              `${plano.token_value} tokens para distribuir`,
-              `${plano.quests_available} questionários por mês`,
-              `${
-                plano.feedbacks_available > 500
-                  ? "Ilimitados"
-                  : plano.feedbacks_available
-              } feedbacks por mês`,
-            ]}
-            botao={
-              <div onClick={() => contractPlan(plano.id)}>
-                <Botao2
-                  className="bg-white hover:bg-white hover:bg-opacity-90 !text-violet-600"
-                  texto="Adquirir plano"
-                />
-              </div>
-            }
-          />
+          <div key={plano.id} className="relative">
+            <CardGenerico
+              key={index}
+              ClassName="!max-w-[20vw] bg-gradient-to-br from-purple-500 to-indigo-600 mt-5 drop-shadow-lg transition-all duration-300 hover:scale-105 hover:drop-shadow-2xl"
+              imagem={
+                index === 0
+                  ? pontoazul
+                  : index === 1
+                  ? pontoroxo
+                  : pontoaroxoazul
+              }
+              titulo={plano.name}
+              descricao={plano.description}
+              lista={[
+                `${plano.token_value} tokens para distribuir`,
+                `${plano.quests_available} questionários por mês`,
+                `${
+                  plano.feedbacks_available > 500
+                    ? "Ilimitados"
+                    : plano.feedbacks_available
+                } feedbacks por mês`,
+              ]}
+              botao={
+                <div onClick={() => contractPlan(plano.id)}>
+                  <Botao2
+                    className={`${
+                      currentPlan && parseInt(currentPlan) === plano.id
+                        ? "bg-green-600 hover:bg-green-600 text-white"
+                        : "bg-white hover:bg-white !text-violet-600"
+                    } hover:bg-opacity-90 `}
+                    texto={
+                      currentPlan && parseInt(currentPlan) === plano.id
+                        ? "Plano Ativo"
+                        : "Adquirir Plano"
+                    }
+                  />
+                </div>
+              }
+            />
+          </div>
         ))}
       </div>
       <span className="text-purple-400 text-sm mt-14">

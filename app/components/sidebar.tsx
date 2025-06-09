@@ -2,20 +2,16 @@
 
 import React, { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { Home, Building, User, Shield, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import CompanyProfile from "./company-sidebar";
 import Image from "next/image";
-import logo from "@/public/png/logo.png";
 import SidebarContent, { menuItems } from "./sidebarContent";
+import { companyInfoType } from "../company/layout";
 
-type CompanyInfo = {
-  name: string;
-  type: string;
-  initials: string;
-};
+
 
 type SidebarProps = {
-  companyInfo: CompanyInfo;
+  companyInfo: companyInfoType;
 };
 
 const SIDEBAR_WIDTH = 224; // 14rem * 16px = 224px
