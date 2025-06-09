@@ -43,7 +43,7 @@ export default function RootLayout({
 
       const infoCompanyObject:companyInfoType = {
         name: userResponse.data.commercial_name,
-        type: planPesponse.data[0].plan.name,
+        type: planPesponse.data[0].plan.name || " ",
         initials: ""
       };
 
