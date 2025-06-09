@@ -56,7 +56,7 @@ export default function Register() {
         <title>Registro | FeedToken</title>
       </Head>
 
-      <div className="flex flex-col md:flex-row h-screen text-purple-950 bg-white">
+      <div className="flex flex-col md:flex-row h-screen text-purple-950 bg-white overflow-y-hidden">
         <div className="hidden md:block md:w-1/2 bg-gradient-to-t from-primary to-secondary relative">
           <Image
             src={backgroundft}

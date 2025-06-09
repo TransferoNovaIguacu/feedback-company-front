@@ -64,7 +64,7 @@ export default function RegistroEmpresa() {
       <Head>
         <title>Registrar Empresa | FeedToken</title>
       </Head>
-      <div className="flex flex-col md:flex-row h-screen text-purple-950 bg-white">
+      <div className="flex flex-col md:flex-row h-screen text-purple-950 bg-white overflow-y-hidden">
         {/* Lado esquerdo: visível só no desktop */}
         <a
           href="/"
@@ -83,8 +83,9 @@ export default function RegistroEmpresa() {
 
         {/* Lado direito: ocupa tudo no mobile, metade no desktop */}
         <div className="w-full h-full md:w-1/2 flex items-center justify-center bg-white">
-          <div className="w-full max-w-md px-6 py-12">
-            <div className="flex items-center mb-8">
+          <div className="w-full max-w-md px-6 py-4">
+  <div className="flex items-center mb-4">
+
               <Image
                 src={logoo}
                 alt="FeedToken logo"
@@ -95,7 +96,7 @@ export default function RegistroEmpresa() {
               <h2 className="text-2xl font-semibold text-primary">FeedToken</h2>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-2">
               <div>
                 <label className="block text-sm font-medium text-purple-700">
                   Nome comercial
@@ -220,7 +221,7 @@ export default function RegistroEmpresa() {
                   type="password"
                   name="confirmPassword"
                   placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;"
-                  className={`mt-1 block w-full rounded-md border px-4 py-2 text-black shadow-sm focus:ring-primary focus:border-primary ${
+                  className={`mt-1 mb-6 block w-full rounded-md border px-4 py-2 text-black shadow-sm focus:ring-primary focus:border-primary ${
                     errors.password2 ? "border-red-500" : "border-purple-700"
                   }`}
                   aria-invalid={!!errors.password2}
