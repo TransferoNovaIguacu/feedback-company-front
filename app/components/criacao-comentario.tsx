@@ -4,7 +4,8 @@ import { SetStateAction, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Botao1 } from "./Botao";
 import api from "@/utils/axios";
-import { fetchMissions, Mission } from "../company/page";
+import { Mission } from "../company/page";
+import { fetchMissions } from "@/utils/fetchMissions";
 
 type FormDataComentario = {
   title: string;

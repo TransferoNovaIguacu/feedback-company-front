@@ -5,6 +5,7 @@ import { Botao1 } from "../components/Botao";
 import { CardAvaliacao, } from "../components/CardAvaliacao";
 import CriacaoComentario from "../components/criacao-comentario";
 import api from "@/utils/axios";
+import { fetchMissions } from "@/utils/fetchMissions";
 
 // const mockData: CardAvaliacaoType[] = [
 //   {
@@ -129,23 +130,6 @@ export interface Mission {
   contracted_plan: number;
   assigned_to: number;
 }
-
-export const fetchMissions = async (setMockData: React.Dispatch<SetStateAction<Mission[]>>) => {
-  console.log("Executando fetchMissions...");
-  try {
-    const token = localStorage.getItem("TOKEN");
-    if (!token) throw new Error("Token não encontrado");
-
-    const response = await api.get("missions/missions/company-missions/", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    setMockData(response.data);
-  } catch (error) {
-    console.error("Erro em fetchMissions:", error);
-  }
-};
 
 export default function CompanyPage(){
   const [paginaAtual, setPaginaAtual] = useState(1);
