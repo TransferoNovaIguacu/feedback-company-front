@@ -5,5 +5,6 @@ export default function CommentPage(){
 
 return(
     // <CriacaoComentario />
+    <h1>P</h1>
 );
 };
