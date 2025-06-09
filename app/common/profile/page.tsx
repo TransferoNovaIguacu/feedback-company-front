@@ -24,18 +24,38 @@ export default function ProfilePage() {
     if (walletAddress) setWallet(walletAddress);
   };
 
-  const handleWalletSubmit = () => {
+  const handleWalletSubmit = async () => {
+    const token = localStorage.getItem("TOKEN")
     if (wallet) localStorage.setItem("WALLET", wallet);
+    const response = await api.put(
+      "auth/wallet/",
+      {
+        wallet_address: wallet,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log(response.data.message);
     setShowWalletModal(false);
   };
 
-  const handleTransfer = async (e: any) => {
+  const handleTransfer = async () => {
     const token = localStorage.getItem("TOKEN");
-    const response = await api.put("auth/wallet/", e, {
-      headers: {
-        Authorization: `Bearer ${token}`,
+    const response = await api.post(
+      "web3/api/v1/wallet/withdraw/",
+      {
+        amount: `${amountToTransfer}`,
       },
-    });
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log(response);
     setAmountToTransfer("");
     setShowWithdrawModal(false);
   };
