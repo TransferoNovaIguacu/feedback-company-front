@@ -29,6 +29,7 @@ export default function AvailableEvaluations() {
             rewardBg: "bg-[#282B33]",
             rewardText: "text-white",
             href: "/auth/login",
+             mission_type: "COMENTE"
           },
           {
             id: 2,
@@ -41,6 +42,7 @@ export default function AvailableEvaluations() {
             rewardBg: "bg-[#5A388D]",
             rewardText: "text-white",
             href: "/auth/login",
+            mission_type: "COMENTE"
           },
           {
             id: 3,
@@ -53,6 +55,7 @@ export default function AvailableEvaluations() {
             rewardBg: "bg-[#285A38]",
             rewardText: "text-white",
             href: "/auth/login",
+             mission_type: "COMENTE"
           },
         ];
         setEvaluations(mockData);

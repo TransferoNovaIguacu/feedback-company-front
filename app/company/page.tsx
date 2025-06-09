@@ -1,125 +1,157 @@
 "use client";
-import { useState, useEffect } from "react";
-import { Botao1 } from "../components/Botao";
-import { CardAvaliacao, CardAvaliacaoType } from "../components/CardAvaliacao";
-import TelaFormulario from "../components/TelaFormulario";
-import CriacaoComentario from "../components/criacao-comentario";
 
-const mockData: CardAvaliacaoType[] = [
-  {
-    id: 1,
-    title: "App de Delivery",
-    company: "FoodExpress Inc.",
-    description:
-      "Avalie nossa nova interface de usuário e o processo de pedido do aplicativo de delivery.",
-    time: "15-20 min",
-    reward: "+60 FTK",
-    rewardBg: "bg-[#282B33]",
-    rewardText: "text-white",
-    href: "/auth/login",
-  },
-  {
-    id: 2,
-    title: "Fones de Ouvido Pro",
-    company: "TechCorp",
-    description:
-      "Teste e avalie nossos novos fones de ouvido com cancelamento de ruído ativo.",
-    time: "30-40 min",
-    reward: "+120 FTK",
-    rewardBg: "bg-[#5A388D]",
-    rewardText: "text-white",
-    href: "/auth/login",
-  },
-  {
-    id: 3,
-    title: "Serviço de Streaming",
-    company: "MediaStream",
-    description:
-      "Avalie a experiência de usuário e as recomendações do nosso novo serviço de streaming.",
-    time: "20-25 min",
-    reward: "+85 FTK",
-    rewardBg: "bg-[#285A38]",
-    rewardText: "text-white",
-    href: "/auth/login",
-  },
-  {
-    id: 4,
-    title: "App de Delivery",
-    company: "FoodExpress Inc.",
-    description:
-      "Avalie nossa nova interface de usuário e o processo de pedido do aplicativo de delivery.",
-    time: "15-20 min",
-    reward: "+60 FTK",
-    rewardBg: "bg-[#282B33]",
-    rewardText: "text-white",
-    href: "/auth/login",
-  },
-  {
-    id: 5,
-    title: "Fones de Ouvido Pro",
-    company: "TechCorp",
-    description:
-      "Teste e avalie nossos novos fones de ouvido com cancelamento de ruído ativo.",
-    time: "30-40 min",
-    reward: "+120 FTK",
-    rewardBg: "bg-[#5A388D]",
-    rewardText: "text-white",
-    href: "/auth/login",
-  },
-  {
-    id: 6,
-    title: "Serviço de Streaming",
-    company: "MediaStream",
-    description:
-      "Avalie a experiência de usuário e as recomendações do nosso novo serviço de streaming.",
-    time: "20-25 min",
-    reward: "+85 FTK",
-    rewardBg: "bg-[#285A38]",
-    rewardText: "text-white",
-    href: "/auth/login",
-  },
-  {
-    id: 7,
-    title: "App de Delivery",
-    company: "FoodExpress Inc.",
-    description:
-      "Avalie nossa nova interface de usuário e o processo de pedido do aplicativo de delivery.",
-    time: "15-20 min",
-    reward: "+60 FTK",
-    rewardBg: "bg-[#282B33]",
-    rewardText: "text-white",
-    href: "/auth/login",
-  },
-  {
-    id: 8,
-    title: "Fones de Ouvido Pro",
-    company: "TechCorp",
-    description:
-      "Teste e avalie nossos novos fones de ouvido com cancelamento de ruído ativo.",
-    time: "30-40 min",
-    reward: "+120 FTK",
-    rewardBg: "bg-[#5A388D]",
-    rewardText: "text-white",
-    href: "/auth/login",
-  },
-  {
-    id: 9,
-    title: "Serviço de Streaming",
-    company: "MediaStream",
-    description:
-      "Avalie a experiência de usuário e as recomendações do nosso novo serviço de streaming.",
-    time: "20-25 min",
-    reward: "+85 FTK",
-    rewardBg: "bg-[#285A38]",
-    rewardText: "text-white",
-    href: "/auth/login",
-  },
-];
+import { useState, useEffect, SetStateAction } from "react";
+import { Botao1 } from "../components/Botao";
+import { CardAvaliacao, } from "../components/CardAvaliacao";
+import CriacaoComentario from "../components/criacao-comentario";
+import api from "@/utils/axios";
+
+// const mockData: CardAvaliacaoType[] = [
+//   {
+//     id: 1,
+//     title: "App de Delivery",
+//     company: "FoodExpress Inc.",
+//     description:
+//       "Avalie nossa nova interface de usuário e o processo de pedido do aplicativo de delivery.",
+//     time: "15-20 min",
+//     reward: "+60 FTK",
+//     rewardBg: "bg-[#282B33]",
+//     rewardText: "text-white",
+//     href: "/auth/login",
+//   },
+//   {
+//     id: 2,
+//     title: "Fones de Ouvido Pro",
+//     company: "TechCorp",
+//     description:
+//       "Teste e avalie nossos novos fones de ouvido com cancelamento de ruído ativo.",
+//     time: "30-40 min",
+//     reward: "+120 FTK",
+//     rewardBg: "bg-[#5A388D]",
+//     rewardText: "text-white",
+//     href: "/auth/login",
+//   },
+//   {
+//     id: 3,
+//     title: "Serviço de Streaming",
+//     company: "MediaStream",
+//     description:
+//       "Avalie a experiência de usuário e as recomendações do nosso novo serviço de streaming.",
+//     time: "20-25 min",
+//     reward: "+85 FTK",
+//     rewardBg: "bg-[#285A38]",
+//     rewardText: "text-white",
+//     href: "/auth/login",
+//   },
+//   {
+//     id: 4,
+//     title: "App de Delivery",
+//     company: "FoodExpress Inc.",
+//     description:
+//       "Avalie nossa nova interface de usuário e o processo de pedido do aplicativo de delivery.",
+//     time: "15-20 min",
+//     reward: "+60 FTK",
+//     rewardBg: "bg-[#282B33]",
+//     rewardText: "text-white",
+//     href: "/auth/login",
+//   },
+//   {
+//     id: 5,
+//     title: "Fones de Ouvido Pro",
+//     company: "TechCorp",
+//     description:
+//       "Teste e avalie nossos novos fones de ouvido com cancelamento de ruído ativo.",
+//     time: "30-40 min",
+//     reward: "+120 FTK",
+//     rewardBg: "bg-[#5A388D]",
+//     rewardText: "text-white",
+//     href: "/auth/login",
+//   },
+//   {
+//     id: 6,
+//     title: "Serviço de Streaming",
+//     company: "MediaStream",
+//     description:
+//       "Avalie a experiência de usuário e as recomendações do nosso novo serviço de streaming.",
+//     time: "20-25 min",
+//     reward: "+85 FTK",
+//     rewardBg: "bg-[#285A38]",
+//     rewardText: "text-white",
+//     href: "/auth/login",
+//   },
+//   {
+//     id: 7,
+//     title: "App de Delivery",
+//     company: "FoodExpress Inc.",
+//     description:
+//       "Avalie nossa nova interface de usuário e o processo de pedido do aplicativo de delivery.",
+//     time: "15-20 min",
+//     reward: "+60 FTK",
+//     rewardBg: "bg-[#282B33]",
+//     rewardText: "text-white",
+//     href: "/auth/login",
+//   },
+//   {
+//     id: 8,
+//     title: "Fones de Ouvido Pro",
+//     company: "TechCorp",
+//     description:
+//       "Teste e avalie nossos novos fones de ouvido com cancelamento de ruído ativo.",
+//     time: "30-40 min",
+//     reward: "+120 FTK",
+//     rewardBg: "bg-[#5A388D]",
+//     rewardText: "text-white",
+//     href: "/auth/login",
+//   },
+//   {
+//     id: 9,
+//     title: "Serviço de Streaming",
+//     company: "MediaStream",
+//     description:
+//       "Avalie a experiência de usuário e as recomendações do nosso novo serviço de streaming.",
+//     time: "20-25 min",
+//     reward: "+85 FTK",
+//     rewardBg: "bg-[#285A38]",
+//     rewardText: "text-white",
+//     href: "/auth/login",
+//   },
+// ];
+export interface Mission {
+  id: number;
+  mission_type: string;
+  title: string;
+  description: string;
+  url: string;
+  status: string;
+  created_at: string; // ISO date string
+  updated_at: string; // ISO date string
+  company: number;
+  contracted_plan: number;
+  assigned_to: number;
+}
+
+export const fetchMissions = async (setMockData: React.Dispatch<SetStateAction<Mission[]>>) => {
+  console.log("Executando fetchMissions...");
+  try {
+    const token = localStorage.getItem("TOKEN");
+    if (!token) throw new Error("Token não encontrado");
+
+    const response = await api.get("missions/missions/company-missions/", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    setMockData(response.data);
+  } catch (error) {
+    console.error("Erro em fetchMissions:", error);
+  }
+};
 
 export default function CompanyPage() {
   const [paginaAtual, setPaginaAtual] = useState(1);
   const [busca, setBusca] = useState("");
   const [creatMission, setCreatMission] = useState<boolean>(false);
+  const [mockData, setMockData] = useState<Mission[]>([]);
   const itensPorPagina = 6;
 
   const hundleOpen = () => {
@@ -141,6 +173,9 @@ export default function CompanyPage() {
   // Resetar para a página 1 quando a busca mudar
   useEffect(() => {
     setPaginaAtual(1);
+    if (typeof window !== "undefined") {
+      fetchMissions(setMockData);
+    }
   }, [busca]);
 
   return (
@@ -166,7 +201,7 @@ export default function CompanyPage() {
       >
         {creatMission && (
           <div className="min-w-[60vw] !max-h-[70vh]">
-            <CriacaoComentario />
+            <CriacaoComentario setMockData={setMockData} mockData={mockData} />
           </div>
         )}
         <div

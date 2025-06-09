@@ -1,48 +1,37 @@
 // components/CardAvaliacao.tsx
 import React, { ReactNode } from 'react';
 import { Botao2 } from './Botao'; // Assumindo que Botao2 está em './Botao'
+import { Mission } from '../company/page';
 
-// Definição da interface para as props do CardAvaliacao
-export interface CardAvaliacaoType {
-  id: number;
-  title: string;
-  company: string;
-  description: string;
-  time: string;
-  reward: string;
-  rewardBg: string; // Classes Tailwind para o background da recompensa
-  rewardText: string; // Classes Tailwind para a cor do texto da recompensa
-  href: string; // O link para onde o card deve redirecionar
-}
 
 interface CardAvaliacaoProps {
-    CardAvaliacaoInfo: CardAvaliacaoType,
+    CardAvaliacaoInfo: Mission,
     className?: string 
     botao?: ReactNode
 }
 
 export  function CardAvaliacao({CardAvaliacaoInfo, className, botao}: CardAvaliacaoProps) {
-    const {company, description, href, reward,rewardBg, rewardText, time, title} = CardAvaliacaoInfo
+    const {company, description, title, mission_type, url} = CardAvaliacaoInfo
   return (
-    <div className={`bg-gray-950 rounded-lg p-6 shadow-lg flex flex-col bg-opacity-45 ${className}`}>
+    <div className={`bg-gray-950 rounded-lg p-6 shadow-lg flex flex-col bg-opacity-45 max-h-96 ${className}`}>
       <div className="flex justify-between items-start mb-4">
-        <h3 className="text-xl font-semibold text-white">
+        <h3 className="text-xl font-semibold text-purple-800">
           {title}
         </h3>
         <span
-          className={`${rewardBg} ${rewardText} text-sm font-medium px-3 py-1 rounded-full`}
+          className={`ml-4 bg-green-500 text-sm font-medium px-3 py-1 rounded-full`}
         >
-          {reward}
+          {mission_type}
         </span>
       </div>
-      <p className="text-sm text-gray-400 mb-2">
+      <p className="text-sm text-purple-800 mb-2">
         {company}
       </p>
-      <p className="text-gray-300 text-base flex-grow mb-4">
+      <p className="text-purple-800 text-base flex-grow mb-4">
         {description}
       </p>
 
-      <div className="flex items-center text-gray-400 text-sm mt-auto mb-4">
+      <div className="flex items-center text-purple-800 text-sm mt-auto mb-4">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -57,9 +46,9 @@ export  function CardAvaliacao({CardAvaliacaoInfo, className, botao}: CardAvalia
             d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
           />
         </svg>
-        {time}
+        10 - 20min
       </div>
-      <a href={href}>
+      <a href={url}>
         {!botao? <Botao2 texto="Participar" /> : botao}
       </a>
     </div>

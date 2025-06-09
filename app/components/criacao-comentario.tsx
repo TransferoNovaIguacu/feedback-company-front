@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Botao1 } from "./Botao";
 import api from "@/utils/axios";
+import { fetchMissions, Mission } from "../company/page";
 
 type FormDataComentario = {
   title: string;
@@ -11,9 +12,14 @@ type FormDataComentario = {
   description: string;
 };
 
+interface CriacaoComentarioProps{
+  setMockData: React.Dispatch<SetStateAction<Mission[]>>
+  mockData: Mission[]
+}
+
 type FormErrors = Partial<Record<keyof FormDataComentario, string>>;
 
-export default function CriacaoComentario() {
+export default function CriacaoComentario({mockData, setMockData}:CriacaoComentarioProps) {
   const [formData, setFormData] = useState<FormDataComentario>({
     title: "",
     url: "",
@@ -46,19 +52,23 @@ export default function CriacaoComentario() {
 
   const submitForm = async (data: FormDataComentario) => {
     const token = localStorage.getItem("TOKEN");
-    
+    const user = localStorage.getItem("USER")
+    if(!user) throw new Error("Usuario não encontrado")
+    const objectUser = JSON.parse(user)
+
     if (!token) throw new Error("Token não encontrado.");
-    const plan =  await api.get("plans/contracted-plans/", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+    const plan = await api.get("plans/contracted-plans/", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     const response = await api.post(
       "missions/missions/",
       {
         mission_type: "FEEDBACK",
         title: data.title,
         description: data.description,
+        company: objectUser.pk,
         url: data.url,
         contracted_plan: parseInt(plan.data[0].id),
       },
@@ -69,6 +79,7 @@ export default function CriacaoComentario() {
       }
     );
 
+    fetchMissions(setMockData)
     console.log(response.data);
     return response;
   };
@@ -94,6 +105,7 @@ export default function CriacaoComentario() {
       console.error("Erro ao enviar solicitação:", error);
     } finally {
       setLoading(false);
+      fetchMissions(setMockData);
     }
   };
 
